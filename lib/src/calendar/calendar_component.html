@@ -1,0 +1,35 @@
+<div class="calendar">
+
+    <div class="title">
+        <h1 class="green" id="calendar-title">{{now_month}}月</h1>
+        <h2 class="green" id="calendar-year">{{now_year}}</h2>
+        <a href="" id="pre"></a>
+        <a href="" id="next"></a>
+    </div>
+
+    <div class="body">
+        <div class="lightgrey body-list">
+            <ul>
+                <li>SUN</li>
+                <li>MON</li>
+                <li>TUE</li>
+                <li>WED</li>
+                <li>THU</li>
+                <li>FRI</li>
+                <li>SAT</li>
+            </ul>
+        </div>
+
+        <div class="body-list">
+            <ul>
+                <li *ngFor = "let day of days; let i = index" class = "day">
+                    <p [class]="day_color[i]">{{day}}</p>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- end class body -->
+    
+</div>
+<!-- end class calendar -->

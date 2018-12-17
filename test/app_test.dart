@@ -1,8 +1,8 @@
 @TestOn('browser')
 import 'package:angular_test/angular_test.dart';
 import 'package:test/test.dart';
-import 'package:Great_Days_Calendar/app_component.dart';
-import 'package:Great_Days_Calendar/app_component.template.dart' as ng;
+import 'package:calendar/app_component.dart';
+import 'package:calendar/app_component.template.dart' as ng;
 
 void main() {
   final testBed =
