@@ -3,8 +3,9 @@
     <div class="title">
         <h1 class="green" id="calendar-title">{{now_month}}月</h1>
         <h2 class="green" id="calendar-year">{{now_year}}</h2>
-        <a href="" id="pre"></a>
-        <a href="" id="next"></a>
+
+        <img id="prev" src="images/prev.png" (click)="clickPrev()" />
+        <img id="next" src="images/next.png" (click)="clickNext()" />
     </div>
 
     <div class="body">
@@ -22,7 +23,8 @@
 
         <div class="body-list">
             <ul>
-                <li *ngFor = "let day of days; let i = index" class = "day">
+                <li *ngFor = "let day of days; let i = index" class = "day" (click)="addEvent(i)">
+                    <img class="event" src="images/circle.png" *ngIf="hasEvent[i]"/>
                     <p [class]="day_color[i]">{{day}}</p>
                 </li>
             </ul>
@@ -33,3 +35,10 @@
     
 </div>
 <!-- end class calendar -->
+
+<div class="plan-list" >
+    <h1>Plan List</h1>
+    <ul id="plans">
+        
+    </ul>
+</div>
