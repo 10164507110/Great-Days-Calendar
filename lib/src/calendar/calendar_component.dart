@@ -2,6 +2,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'dart:html';
 
+
 @Component(
   selector: 'calendar',
   styleUrls: ['calendar_component.css'],
@@ -13,14 +14,22 @@ import 'dart:html';
 )
 
 class CalendarComponent{
+  /*------------------- instance variables --------------------*/
   List<int> days = new List<int>.filled(42, -1);
   List<String> day_color = new List<String>.filled(42, "lightgrey");
   List<int> month_day = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   List<bool> hasEvent = new List<bool>.filled(42, false);
   int now_day, now_month, now_year;
 
+      /* ----- 伪数据库 ----- */
+          List<String> groups = ["猪组", "英汉互译分队", "2016级教信班委通知群"];
+
+      /* ------------------- */
+
+
   //constructor
   CalendarComponent(){
+    //初始化将日历设置成当日
     DateTime now = new DateTime.now();
     now_day = now.day;
     now_month = now.month;
@@ -29,6 +38,7 @@ class CalendarComponent{
   }
 
   /*---------------------------methods---------------------------*/
+  /*---------- 日历本体相关 ----------*/
   //更新日历
   void calendarUpdate(){
     DateTime firstday = new DateTime.utc(now_year, now_month, 1);
@@ -36,10 +46,15 @@ class CalendarComponent{
 
     int now_pos = first_weekday % 7;
     days[now_pos] = 1;
-    day_color[now_pos] = "black";
     leapYear(now_year);
 
+    //将颜色恢复成默认的灰色
+    for(int i = 0; i < day_color.length; i++){
+      day_color[i] = "lightgrey";
+    }
+
     //填上这个月的日期，并设为黑色
+    day_color[now_pos] = "black";
     for(int i = now_pos + 1, j = 2; j <= month_day[now_month]; i++, j++){
       days[i] = days[i-1] + 1;
       day_color[i] = "black";
@@ -91,11 +106,22 @@ class CalendarComponent{
     calendarUpdate();
   }
 
+  //点击添加事件(伪)
   void addEvent(int i){
     hasEvent[i] = true;
-    Element plans = querySelector("#plans");
-    Element li = new Element.li();
-    li.innerHtml = "Hello World";
-    plans.append(li);
+    // Element plans = querySelector("#plans");
+    // Element li = new Element.li();
+    // li.innerHtml = "Hello World";
+    // plans.append(li);
   }
+  
+  //点击refresh按钮，重置日历
+  void refresh(){
+    DateTime now = new DateTime.now();
+    now_day = now.day;
+    now_month = now.month;
+    now_year = now.year;
+    calendarUpdate();
+  }
+  
 }

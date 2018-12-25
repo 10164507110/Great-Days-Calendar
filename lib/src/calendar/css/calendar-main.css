@@ -1,0 +1,129 @@
+/*
+ * calendar-main.css ver.18-12-23
+ * 该CSS负责处理在main-zone显示的calendar的样式
+ * 即左下区域显示的放大状态下的日历
+ */
+
+
+/* 位于main-zone的calendar
+---------------------------------------------*/
+.calendar-main{
+    margin: 45px;
+    margin-right: 4px;
+    width: 900px;
+    height: 525px;
+}
+
+
+
+
+
+
+/* title: XX 月 XX 年
+----------------------------------------------*/
+/* title整体 */
+.calendar-main .title{
+    height: 100px;
+    position: relative;
+    text-align: center;
+}
+
+/* 前进、后退按钮 */
+.calendar-main #prev,.calendar-main  #next{
+    position: relative;
+    top: -65px;
+}
+.calendar-main #prev{ left: -38%;}
+.calendar-main #next{ left: 38%;}
+
+/* title的月 XX月 */
+.calendar-main #calendar-title{
+    font-size: 40px;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 11px 0 0 0;
+}
+
+/* title的年 20XX */
+.calendar-main #calendar-year{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+
+
+
+
+
+/* body-list : 包括具体的日期和SUN等星期
+----------------------------------------------------*/
+.calendar-main .body-list ul{
+    font-size: 21px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+}  
+
+.calendar-main .body-list ul li{
+    list-style: none;
+    /*
+    display:inline-block; 
+    width: 13.3%;
+    */
+
+    /*100/7 = 14.28%*/
+    display: block;
+    position: relative;
+    width: 14.28%;
+    float: left;
+
+    /*规定行高，垂直居中*/
+    height: 54px;
+    line-height: 54px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.calendar-main .body-list ul li p{
+    position: relative;
+}
+
+/* 当前事件为一个圆点，该圆点的位置与大小修正 */
+.calendar-main .event{
+    width: 10px;
+    position: absolute;
+    left: 85%;
+    top: 2%;
+}
+
+/* 今日 */
+.calendar-main .today{
+    font-size: 28px;
+}
+
+
+
+
+
+
+/* refresh 刷新按钮
+-----------------------------------------------*/
+.calendar-main #refresh img{
+    width: 30px;
+}
+
+.calendar-main #refresh:hover{
+    cursor: pointer;
+}
+
+.calendar-main #refresh img:hover{
+    width: 35px;
+}
+
+.calendar-main #refresh{
+    position: absolute;
+    left: 95%;
+    top: 93%;
+}

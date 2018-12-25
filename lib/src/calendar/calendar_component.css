@@ -1,118 +1,48 @@
-.calendar{
-    margin: 45px;
-    margin-right: 4px;
-    width: 900px;
-    height: 525px;
-    background: white;
-    box-shadow: 0px 1px 1px rgba(0,0,0,.1);
-}
-
-.title{
-    height: 100px;
-    border-bottom: 1px solid rgba(0,0,0,.1);
-    position: relative;
-    text-align: center;
-}
-
-#prev, #next{
-    position: relative;
-    top: -65px;
-}
-
-#prev{
-    left: -38%;
-}
-
-#next{
-    left: 38%;
-}
+/*
+ * 开发阶段，先把css按这样的分开成块 分开的css在css文件夹下
+ * 最后合起来，如果增加新的小模块，也增加一个新的css，按这样先导入，最后组合。
+ * 例如，增加登入模块，就导入 ("css/login.css");
+ * 注意命名有意义、直观
+ */
 
 
+/*
+ * 关于颜色的主要css
+ */
+@import url("css/color.css");
 
-#calendar-title{
-    font-size: 40px;
-    text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 21px 0 0 0;
-}
 
-#calendar-year{
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: normal;
-}
+/*
+ * 关于主体布局的css
+ */
+@import url("css/layout.css");
 
-.body-list ul{
-    font-size: 21px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    width: 100%;
-    box-sizing: border-box;
 
-}  
+/*
+ * 关于主类 calendar的样式
+ */
+@import url("css/calendar-main.css");
+@import url("css/calendar-list.css");
 
-.body-list ul li{
-    list-style: none;
-    /*
-    display:inline-block; 
-    width: 13.3%;
-    */
 
-    /*100/7 = 14.28%*/
-    display: block;
-    position: relative;
-    width: 14.28%;
-    float: left;
+/*
+ * 关于我的群组的myGroups的样式
+ */
+@import url("css/myGroups-main.css");
+@import url("css/myGroups-list.css");
 
-    /*规定行高，垂直居中*/
-    height: 54px;
-    line-height: 54px;
-    box-sizing: border-box;
-    text-align: center;
-    
-}
 
-.day{
-    border: 1px solid #CFCFCF;
-}
+/*
+ * 关于我的群组的myGroups的样式
+ */
+@import url("css/myPlans-main.css");
+@import url("css/myPlans-list.css");
 
-.green{
-    color:#6ac13c;
-}
 
-.lightgrey{ /*浅灰色显示过去的日期*/
-    color:#a8a8a8;
-}   
+/*
+ * 关于侧栏 right-list的样式
+ */
+@import url("css/rightList.css");
 
-.black{
-    color: #333;
-}
 
-.today{
-    color: #6ac13c;
-    font-size: 28px;
-}
 
-.body-list ul li p{
-    position: relative;
-}
-
-.event{
-    width: 10px;
-    position: absolute;
-    left: 85%;
-    top: 2%;
-}
-
-.plan-list{
-    background-color: white;
-    width: 200px;
-    height: 400px;
-    position: absolute;
-    top: 45px;
-    left: 1000px;
-}
-
-#plans{
-    color: teal;
-}

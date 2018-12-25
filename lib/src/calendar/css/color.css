@@ -1,0 +1,64 @@
+/*
+ * color.css ver.18-12-23
+ * 一些关于颜色的样式，包括背景色，字体色等
+ */
+
+
+/* COMMON
+------------------------------------------------------------*/
+/* 绿色主要用于月份年份title */
+.green{
+    color:#6ac13c;
+}
+
+/*浅灰色显示过去的日期*/
+.lightgrey{ 
+    color:#a8a8a8;
+}   
+
+/* 黑色显示这个月的日期 */
+.black{
+    color: #333;
+}
+
+
+
+
+
+
+/* calendar
+------------------------------------------------------*/
+/* calender的背景色 */
+#main-zone{
+    background: white;
+    box-shadow: 0px 1px 1px rgba(0,0,0,.1);
+}
+
+/* title的下边框 年份下面的细线 */
+.title{
+    border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+/* 今日 */
+.today{
+    color: #6ac13c;
+}
+
+
+
+
+
+
+/* use in test */
+/* 调试过程中，对主要的几个区域涂背景色，便于区分，观察大小 */
+#logo-zone{
+    background-color: skyblue;
+}
+
+#right-list{
+    background-color: teal;
+}
+
+.main{
+    background-color: lightcyan;
+}
