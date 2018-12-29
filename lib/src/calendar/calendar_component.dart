@@ -20,9 +20,12 @@ class CalendarComponent{
   List<int> month_day = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   List<bool> hasEvent = new List<bool>.filled(42, false);
   int now_day, now_month, now_year;
+  bool groupsFlag = true;//默认我的群组展开
+  bool plansFlag = true;//默认我的计划展开
 
       /* ----- 伪数据库 ----- */
           List<String> groups = ["猪组", "英汉互译分队", "2016级教信班委通知群"];
+          List<String> plans = ["看jojob", "搭dart环境"];
 
       /* ------------------- */
 
@@ -122,6 +125,14 @@ class CalendarComponent{
     now_month = now.month;
     now_year = now.year;
     calendarUpdate();
+  }
+
+  //点击下拉菜单的开头按钮，收回/展开下拉菜单
+  void dropDownList(String target){
+    switch(target){
+      case 'group':this.groupsFlag = !this.groupsFlag;break;
+      case 'plan':this.plansFlag = !this.plansFlag;break;
+    }
   }
   
 }

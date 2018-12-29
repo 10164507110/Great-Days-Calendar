@@ -58,15 +58,23 @@
 
         <div class="myGroups-list">
             <div id="myGroups">
-                <h1>OUR Groups</h1>
-                <p>text words</p>
+                <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
+                <ul *ngIf="groupsFlag">
+                    <li *ngFor = "let group of groups; let i = index" class="myGroup">
+                        -&nbsp;&nbsp;{{group}}
+                    </li>
+                </ul>
             </div>
         </div>
 
         <div class="myPlans-list">
             <div id="myPlans">
-                <h1>Plan List Test</h1>
-                <p>test words</p>
+                <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
+                <ul *ngIf="plansFlag">
+                    <li *ngFor = "let plan of plans; let i = index" class="myPlan">
+                        -&nbsp;&nbsp;{{plan}}
+                    </li>
+                </ul>
             </div>
         </div>
 

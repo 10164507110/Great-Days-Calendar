@@ -1,0 +1,18 @@
+/* --------- test -------- */
+.myGroups-list{
+    font-size: 140%;
+    margin-top: 30px;
+    background-color: #ccc;
+}
+
+.myGroups-list #myGroups-button{
+    font-size: 140%;
+    font-weight: bold;
+    background-color: white;
+}
+
+.myGroups-list .myGroup{
+    display: block;
+    line-height: 180%;
+    margin-left: 40px;
+}
