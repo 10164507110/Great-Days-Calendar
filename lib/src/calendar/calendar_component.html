@@ -56,16 +56,28 @@
 
     <div class="col-lg-3" id="right-list">
 
-        <div class="myGroups-list">
-            <div id="myGroups">
-                <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
-                <ul *ngIf="groupsFlag">
-                    <li *ngFor = "let group of groups; let i = index" class="myGroup">
-                        -&nbsp;&nbsp;{{group}}
-                    </li>
-                </ul>
+            <div class="myGroups-list">
+                <div id="myGroups">
+                    <div id="myGroups-button" (click)="dropDownOptions('groupOption')">我的群组</div>
+                         <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('group')">我所在的群组</div>
+                                <ul *ngIf="groupsFlag">                 
+                                    <li *ngFor = "let group of groups; let i = index" class="myGroup">
+                                        -&nbsp;&nbsp;{{group}}
+                                    </li>
+                                </ul>
+                        <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('addgroup')">加入群组</div>
+                        <!--<ul *ngIf="optionsFlag" >
+                            <li *ngFor = "let optionsInMyGroup of optionsInMyGroups; let i = index" class ="myGroup" (click)="dropDownList('group')"> 
+                                -&nbsp;&nbsp;{{optionsInMyGroup}}
+                                <ul *ngIf="groupsFlag">                 
+                                    <li *ngFor = "let group of groups; let i = index" class="myGroup">
+                                        -&nbsp;&nbsp;{{group}}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>  -->
+                </div>
             </div>
-        </div>
 
         <div class="myPlans-list">
             <div id="myPlans">
@@ -151,9 +163,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </form>
-                    <button class="btn btn-info" (click)="submitPlan();">SUBMIT</button>
                     <div *ngIf="submit">
                         {{plantype}}
                     </div>

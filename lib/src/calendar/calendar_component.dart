@@ -25,6 +25,8 @@ class CalendarComponent{
   int now_day, now_month, now_year;
   bool groupsFlag = true;//默认我的群组展开
   bool plansFlag = true;//默认我的计划展开
+  bool optionsFlag = true;//默认我的群组中选项展开
+  bool addGroupFlag = true;//默认加入群组选项展开
   
   /*----- 我的计划有关的变量 -------*/
   bool submit = false;
@@ -37,6 +39,8 @@ class CalendarComponent{
   String plantimeBegin = '';//具体的时间
   String plandateEnd = '';//日期信息(时间段终点)
   String plantimeEnd = '';//具体的时间
+
+  final String content = 'click me';
 
 
       /* ----- 伪数据库 ----- */
@@ -143,13 +147,24 @@ class CalendarComponent{
     calendarUpdate();
   }
 
-  //点击下拉菜单的开头按钮，收回/展开下拉菜单
+  //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
+  void dropDownOptions(String option){
+    switch(option){
+      case 'groupOption':{        
+        this.optionsFlag = !this.optionsFlag;
+        if(!optionsFlag)groupsFlag = optionsFlag;
+        break;
+      }
+  }  
+}
+  //点击下拉菜单的开头按钮，收回/展开下拉二级菜单
   void dropDownList(String target){
     switch(target){
       case 'group':this.groupsFlag = !this.groupsFlag;break;
       case 'plan':this.plansFlag = !this.plansFlag;break;
+      case 'addgroup':this.addGroupFlag = !this.addGroupFlag;
     }
-  }
+  } 
 
 
   /* ------ 与我的计划相关的函数 ---------*/
