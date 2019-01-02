@@ -8,6 +8,9 @@ import 'dart:html';
   styleUrls: ['calendar_component.css'],
   templateUrl: 'calendar_component.html',
   directives: [
+    materialInputDirectives,
+    MaterialRadioComponent,
+    MaterialRadioGroupComponent,
     NgFor,
     NgIf,
   ],
@@ -22,6 +25,19 @@ class CalendarComponent{
   int now_day, now_month, now_year;
   bool groupsFlag = true;//默认我的群组展开
   bool plansFlag = true;//默认我的计划展开
+  
+  /*----- 我的计划有关的变量 -------*/
+  bool submit = false;
+  String planname = '';//计划名称
+  String plantype = '';//时间点/时间段
+
+  String plandatePoint = '';//日期信息
+  String plantimePoint = '';//具体的时间
+  String plandateBegin = '';//日期信息(时间段起点)
+  String plantimeBegin = '';//具体的时间
+  String plandateEnd = '';//日期信息(时间段终点)
+  String plantimeEnd = '';//具体的时间
+
 
       /* ----- 伪数据库 ----- */
           List<String> groups = ["猪组", "英汉互译分队", "2016级教信班委通知群"];
@@ -133,6 +149,13 @@ class CalendarComponent{
       case 'group':this.groupsFlag = !this.groupsFlag;break;
       case 'plan':this.plansFlag = !this.plansFlag;break;
     }
+  }
+
+
+  /* ------ 与我的计划相关的函数 ---------*/
+  // 我的计划的表单提交
+  void submitPlan(){
+    submit = true;
   }
   
 }
