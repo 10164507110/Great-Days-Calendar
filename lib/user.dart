@@ -7,6 +7,7 @@ class User extends Serializable {
   int id;
   String username;
   String password;
+  String mailbox;
 
   static Future<List> getAll()async {
     List results;
@@ -54,16 +55,46 @@ class User extends Serializable {
   @override
   void readFromMap(Map<String, dynamic> map) {
 //    id = map['id'];
-    username = map['name'];
+    username = map['username'];
     password = map['password'];
+    mailbox = map['mailbox'];
   }
 
   @override
   Map<String, dynamic> asMap() {
     return {
 //      'id': id,
-      'name': username,
-      'password':password
+      'username': username,
+      'password':password,
+      'mailbox':mailbox
     };
+  }
+
+  static createUser(User testuser) async {
+//    List results;
+    bool ifRegister = false;
+    String username = testuser.username;
+    String password = testuser.password;
+    String mailbox = testuser.mailbox;
+    print(username);
+    var s = ConnectionSettings(
+      user: "deit2016",
+      password: "deit2016@ecnu",
+      host: "www.muedu.org",
+      port: 3306,
+      db: "deit2016db_10164507121",
+    );
+
+    // create a connection
+    print("Opening connection ...");
+    var conn = await MySqlConnection.connect(s);
+    print("Opened connection!");
+
+    print("Inserting rows ...");
+    await conn.preparedWithAll("INSERT INTO user (username,password,email) VALUES (?,?,?)", [
+      [username, password, mailbox],
+      ]);
+    ifRegister = true;
+    return ifRegister;
   }
 }

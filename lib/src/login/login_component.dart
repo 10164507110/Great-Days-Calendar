@@ -10,9 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:calendar/src/routes.dart';
 
 @Component(
-  selector: 'register',
-  styleUrls: ['register_component.css'],
-  templateUrl: 'register_component.html',
+  selector: 'login',
+  styleUrls: ['login_component.css'],
+  templateUrl: 'login_component.html',
   directives: [
     materialInputDirectives,
     MaterialRadioComponent,
@@ -26,24 +26,28 @@ import 'package:calendar/src/routes.dart';
   pipes: [commonPipes],
 )
 
-class RegisterComponent{
+class LoginComponent{
 
   String username = '';
   String password = '';
-  String mailbox = '';
   Router _router;
 //  _router.;
-  RegisterComponent(this._router);
-  register(){
+  bool ifRegister = false;
+  LoginComponent(this._router);
+
+  Future<NavigationResult> gotoRegister() =>
+      _router.navigate(RoutePaths.register.toUrl());
+
+  login(){
     var client = new http.Client();
-    var url = "http://localhost:8002/register";
-    var body = json.encode({"username": username,"mailbox":mailbox,"password": password});
+    var url = "http://localhost:8002/login";
+    var body = json.encode({"name": username,"password": password});
     var headers = {
       "content-type":"application/json"
     };
 
-    Future<NavigationResult> gotoLogin() =>
-        _router.navigate(RoutePaths.login.toUrl());
+    Future<NavigationResult> gotoCalendar() =>
+      _router.navigate(RoutePaths.calendar.toUrl());
 
     client.post(
         url,
@@ -51,11 +55,11 @@ class RegisterComponent{
         body:body)
         .then((response) {
           if(response.statusCode == 200) {
-            window.alert("注册成功");
-            gotoLogin();
+            print(RoutePaths.calendar.toUrl().toString());
+            gotoCalendar();
           }
           else
-            window.alert("注册失败");
+            window.alert("请输入正确的用户名和密码");
 //          print(response.body);
         })
         .whenComplete(client.close);

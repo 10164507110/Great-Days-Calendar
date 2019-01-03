@@ -34,16 +34,19 @@ class MyServerChannel extends ApplicationChannel {
     // Prefer to use `link` instead of `linkFunction`.
     // See: https://aqueduct.io/docs/http/request_controller/
     router
+        .route("/login").link(()=>LoginController());
+    router
         .route("/register").link(()=>RegisterController());
+
     return router;
   }
 }
 
 
-class RegisterController extends ResourceController{
+class LoginController extends ResourceController{
 
   @Operation.post()
-  Future<Response> register(@Bind.body() User testuser) async {
+  Future<Response> login(@Bind.body() User testuser) async {
     if(testuser.username == '' || testuser.password == '') {
       return Response.badRequest(body: {"error": "username and password required."});
     }
@@ -53,4 +56,17 @@ class RegisterController extends ResourceController{
     }else return Response.badRequest(body: {"error": "wrong username or password."});
   }
 }
+
+class RegisterController extends ResourceController{
+
+  @Operation.post()
+  Future<Response> register(@Bind.body() User testuser) async {
+    bool ifregister = await User.createUser(testuser);
+    if(ifregister == true){
+      return Response.ok({"success":"register success"});
+    }else return Response.badRequest(body: {"error": "register failed"});
+  }
+
+}
+
 

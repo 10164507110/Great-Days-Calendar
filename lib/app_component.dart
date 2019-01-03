@@ -5,7 +5,7 @@ import 'package:calendar/src/route_paths.dart';
 import 'package:calendar/src/routes.dart';
 
 import 'src/calendar/calendar_component.dart';
-import 'src/Register/register_component.dart';
+import 'src/login/login_component.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
@@ -14,7 +14,7 @@ import 'src/Register/register_component.dart';
   selector: 'my-app',
   styleUrls: ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: [CalendarComponent,RegisterComponent,routerDirectives],
+  directives: [CalendarComponent,LoginComponent,routerDirectives],
   exports: [RoutePaths, Routes]
 )
 class AppComponent {

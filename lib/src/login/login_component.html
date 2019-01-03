@@ -1,4 +1,4 @@
-<div id="content">
+<div id="content" *ngIf="ifRegister == false">
     <form>
         <div class="login-input-box">
             <p>用户名</p>
@@ -15,17 +15,14 @@
                             [(ngModel)]="password">
             </material-input>
         </div>
-        <div class="login-input-box">
-            <p>邮箱</p>
-            <material-input label="Your Mailbox"
-                            class="login-input-box"
-                            type="mailbox"
-                            [(ngModel)]="mailbox">
-            </material-input>
+        <div>
+            <a (click)="login()" class="col-1-4">
+            <h4>登录</h4>
+            </a>
         </div>
         <div>
-            <a (click)="register()" class="col-1-4">
-            <h4>注册</h4>
+            <a (click)="gotoRegister()" class="col-1-4">
+                <h4>去注册</h4>
             </a>
         </div>
     </form>
