@@ -32,14 +32,12 @@ class RegisterComponent{
     var headers = {
       "content-type":"application/json"
     };
-//    final response = http.post(url,body: body,headers: headers);
     client.post(
         url,
         headers: headers,
         body:body)
         .then((response) => ifRegister = true)
         .whenComplete(client.close);
-//    print(response);
   }
 
   
