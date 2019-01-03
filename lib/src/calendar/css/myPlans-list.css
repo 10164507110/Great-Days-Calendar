@@ -8,7 +8,8 @@
 .myPlans-list #myPlans-button{
     font-size: 140%;
     font-weight: bold;
-    background-color: white;
+    color:white;
+    background-color: skyblue;
 }
 
 .myPlans-list .myPlan{

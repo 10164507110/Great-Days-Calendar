@@ -32,11 +32,12 @@
 
                 <!-- 日期： 共6*7格，用dart生成，angular自动生成li标签 -->
                 <div class="body-list">
-                    <ul>
+                    <ul id="dayslist">
                         <li *ngFor = "let day of days; let i = index">
                             <!-- 伪点击事件：增加一个表示事件的圆点 -->
-                            <img class="event" src="images/circle.png" *ngIf="hasEvent[i]"/>
-                            <p [class]="day_color[i]">{{day}}</p>
+                            <!-- <img class="event" src="images/circle.png" *ngIf="hasEvent[i]"/> -->
+                            <span class="plandot" *ngIf="hasEvent[i]"><span [class]="eventColor[i]">●</span></span>
+                            <p [class]="day_color[i]"><span [class] = "hovercolor[i]">{{day}}</span></p>
                         </li>
                     </ul>
                 </div>
@@ -83,8 +84,10 @@
             <div id="myPlans">
                 <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
                 <ul *ngIf="plansFlag">
-                    <li *ngFor = "let plan of myplans; let i = index" class="myPlan">
+                    <li *ngFor = "let plan of myplans; let i = index" class="myPlan" 
+                        (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)">
                         -&nbsp;&nbsp;{{plan.planname}}
+                        <span class="plandot"><span [class]="plancolor[i]">{{dotOrDash[i]}}</span></span>
                     </li>
                 </ul>
                 <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">
@@ -177,10 +180,7 @@
                     </div>
                 </div>
                 <!-- end form -->
-                <!-- //test zone -->
-                <div>
-                    {{test}}
-                </div>
+                
             </div>
         </div>
 

@@ -8,7 +8,8 @@
 .myGroups-list #myGroups-button{
     font-size: 140%;
     font-weight: bold;
-    background-color: white;
+    color: white;
+    background-color: skyblue;
 }
 
 .myGroups-list .myGroup{
