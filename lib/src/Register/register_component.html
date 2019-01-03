@@ -1,17 +1,28 @@
-<div>
-    <p>hhhhh</p>
-    <material-input label="Your Username"
-                    autoFocus floatingLabel style="width:80%"
-                    [(ngModel)]="username"
-                    (keyup.enter)="register()">
-    </material-input>
-    <material-input label="Your Password"
-                    autoFocus floatingLabel style="width:80%"
-                    [(ngModel)]="password"
-                    (keyup.enter)="register()">
-    </material-input>
-    <material-fab mini raised
-                  (trigger)="register()">
-        <material-icon icon="add"></material-icon>
-    </material-fab>
+<div id="content" *ngIf="ifRegister == false">
+    <form>
+        <div class="login-input-box">
+            <p>用户名</p>
+            <material-input label="Your Username"
+                            class="login-input-box"
+                            [(ngModel)]="username">
+            </material-input>
+        </div>
+        <div class="login-input-box">
+            <p>密码</p>
+            <material-input label="Your Password"
+                            class="login-input-box"
+                            type="password"
+                            [(ngModel)]="password">
+            </material-input>
+        </div>
+        <div>
+            <a (click)="register()" class="col-1-4">
+            <h4>登录</h4>
+            </a>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="ifRegister == true">
+    <calendar></calendar>
 </div>
