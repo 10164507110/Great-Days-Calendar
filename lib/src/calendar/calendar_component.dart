@@ -2,6 +2,8 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'dart:html';
 
+import 'package:angular_router/angular_router.dart';
+
 
 @Component(
   selector: 'calendar',
@@ -13,6 +15,7 @@ import 'dart:html';
     MaterialRadioGroupComponent,
     NgFor,
     NgIf,
+    routerDirectives
   ],
 )
 
