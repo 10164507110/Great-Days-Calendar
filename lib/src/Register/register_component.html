@@ -1,0 +1,17 @@
+<div>
+    <p>hhhhh</p>
+    <material-input label="Your Username"
+                    autoFocus floatingLabel style="width:80%"
+                    [(ngModel)]="username"
+                    (keyup.enter)="register()">
+    </material-input>
+    <material-input label="Your Password"
+                    autoFocus floatingLabel style="width:80%"
+                    [(ngModel)]="password"
+                    (keyup.enter)="register()">
+    </material-input>
+    <material-fab mini raised
+                  (trigger)="register()">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+</div>

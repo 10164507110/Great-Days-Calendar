@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   angular: ^5.0.0
+  http: ^0.12.0
   angular_components: ^0.9.0
   bootstrap_sass: ^4.1.3+0
 
