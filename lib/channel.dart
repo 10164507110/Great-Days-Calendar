@@ -42,15 +42,15 @@ class MyServerChannel extends ApplicationChannel {
 
 class RegisterController extends ResourceController{
 
-//  MyRegisterController() {
-//    policy.allowedMethods = ["POST"];
-//  }
   @Operation.post()
   Future<Response> register(@Bind.body() User testuser) async {
+    if(testuser.username == '' || testuser.password == '') {
+      return Response.badRequest(body: {"error": "username and password required."});
+    }
     var selectUserPassword = await User.selectPassword(testuser.username);
     if(selectUserPassword != "wrong" && selectUserPassword == testuser.password){
       return Response.ok({"success":"register success"});
-    }else return Response.ok({"failed":"wrong username"});
+    }else return Response.badRequest(body: {"error": "wrong username or password."});
   }
 }
 

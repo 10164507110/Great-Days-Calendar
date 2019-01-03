@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
@@ -36,9 +37,18 @@ class RegisterComponent{
         url,
         headers: headers,
         body:body)
-        .then((response) => ifRegister = true)
+        .then((response) {
+//          print(response.statusCode);
+          if(response.statusCode == 200)
+            ifRegister = true;
+          else
+            window.alert("请输入正确的用户名和密码");
+//          print(response.body);
+        })
         .whenComplete(client.close);
   }
+
+
 
   
 }
