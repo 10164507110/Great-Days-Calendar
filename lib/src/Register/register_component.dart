@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:http/http.dart' as http;
@@ -23,11 +25,19 @@ class RegisterComponent{
 
   register(){
     var client = new http.Client();
+    var url = "http://localhost:8002/register";
+    var body = json.encode({"name": "admin","password": "abc123"});
+    Map headers = {
+      'content-type':'application/json'
+    };
+//    final response = http.post(url,body: body,headers: headers);
     client.post(
-        "http://localhost:8002/register",
-        body:{"name": "admin","password": "abc123"})
+        url,
+        headers: headers,
+        body:body)
         .then((response) => print(response.body))
         .whenComplete(client.close);
+//    print(response);
   }
 
   
