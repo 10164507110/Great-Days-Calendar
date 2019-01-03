@@ -33,7 +33,7 @@
                 <!-- 日期： 共6*7格，用dart生成，angular自动生成li标签 -->
                 <div class="body-list">
                     <ul>
-                        <li *ngFor = "let day of days; let i = index" (click)="addEvent(i)">
+                        <li *ngFor = "let day of days; let i = index">
                             <!-- 伪点击事件：增加一个表示事件的圆点 -->
                             <img class="event" src="images/circle.png" *ngIf="hasEvent[i]"/>
                             <p [class]="day_color[i]">{{day}}</p>
@@ -58,12 +58,24 @@
 
         <div class="myGroups-list">
             <div id="myGroups">
-                <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
-                <ul *ngIf="groupsFlag">
-                    <li *ngFor = "let group of groups; let i = index" class="myGroup">
-                        -&nbsp;&nbsp;{{group}}
+                <div id="myGroups-button" (click)="dropDownOptions('groupOption')">我的群组</div>
+                    <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('group')">我所在的群组</div>
+                        <ul *ngIf="groupsFlag">                 
+                            <li *ngFor = "let group of groups; let i = index" class="myGroup">
+                                -&nbsp;&nbsp;{{group}}
+                            </li>
+                        </ul>
+                <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('addgroup')">加入群组</div>
+                <!--<ul *ngIf="optionsFlag" >
+                    <li *ngFor = "let optionsInMyGroup of optionsInMyGroups; let i = index" class ="myGroup" (click)="dropDownList('group')"> 
+                        -&nbsp;&nbsp;{{optionsInMyGroup}}
+                        <ul *ngIf="groupsFlag">                 
+                            <li *ngFor = "let group of groups; let i = index" class="myGroup">
+                                -&nbsp;&nbsp;{{group}}
+                            </li>
+                        </ul>
                     </li>
-                </ul>
+                </ul>  -->
             </div>
         </div>
 
@@ -75,6 +87,95 @@
                         -&nbsp;&nbsp;{{plan}}
                     </li>
                 </ul>
+                <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">
+                   <img src="images/bottom.png" width="30px" title="点击此处展开"/> 
+                </div>
+                <div *ngIf="plansFlag" id="addPlanBtn">
+                    <button class="btn btn-info" (click)="addPlan();">+</button>
+                </div>
+
+                <!------------------------ 我的计划 - 表单 -------------------------->
+                <div class="well" id="addPlanForm" *ngIf="showPlan">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="planname" class="col-sm-4 control-label">任务名</label>
+                            <div class="col-sm-8">
+                                <material-input type="text" autoFocus floatingLabel style="width:100%" 
+                                    [(ngModel)]="planname" aria-placeholder="请输入任务名"></material-input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="plantype" class="col-sm-4 control-label">类型</label>
+                            <material-radio-group class="col-sm-8" [(ngModel)]="plantype">
+                                <label class="radio-inline">
+                                    <material-radio name="plantype" value="point" >时间点</material-radio>
+                                </label>
+                                <label class="radio-inline">
+                                    <material-radio name="plantype" value="interval">时间段</material-radio>
+                                </label>
+                            </material-radio-group>
+                        </div>
+
+                        <!-- 如果是时间点 -->
+                        <div *ngIf="plantype=='point'">
+                            <div class="form-group">
+                                <label for="plandate-point" class="col-sm-4 control-label">日期</label>
+                                <div class="col-sm-8">
+                                    <material-input type="date" autoFocus floatingLabel style="width:100%" 
+                                        [(ngModel)]="plandatePoint"></material-input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="plantime-point" class="col-sm-4 control-label">时间</label>
+                                <div class="col-sm-8">
+                                    <material-input type="time" autoFocus floatingLabel style="width:100%" 
+                                    [(ngModel)]="plantimePoint"></material-input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 如果是时间段 -->
+                        <div *ngIf="plantype=='interval'">
+                            <div class="form-group">
+                                <label for="plandate" class="col-sm-4 control-label">开始日期</label>
+                                <div class="col-sm-8">
+                                    <material-input type="date" autoFocus floatingLabel style="width:100%" 
+                                        [(ngModel)]="plandateBegin"></material-input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="plantime" class="col-sm-4 control-label">时间</label>
+                                <div class="col-sm-8">
+                                    <material-input type="time" autoFocus floatingLabel style="width:100%" 
+                                    [(ngModel)]="plantimeBegin"></material-input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="plandate" class="col-sm-4 control-label">结束日期</label>
+                                <div class="col-sm-8">
+                                    <material-input type="date" autoFocus floatingLabel style="width:100%" 
+                                        [(ngModel)]="plandateEnd"></material-input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="plantime" class="col-sm-4 control-label">时间</label>
+                                <div class="col-sm-8">
+                                    <material-input type="time" autoFocus floatingLabel style="width:100%" 
+                                    [(ngModel)]="plantimeEnd"></material-input>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <button class="btn btn-info" (click)="submitPlan();">SUBMIT</button>
+                    <button class="btn btn-default" (click)="closePlan();">CLOSE</button>
+                    <div *ngIf="submitWarning">
+                        <label class="alert alert-warning">请确保输入完整</label>
+                    </div>
+                    <div *ngIf="submit && plantype=='point'">
+                        {{plantimePoint.substring(0,2)}} - {{plantimePoint.substring(3)}}
+                    </div>
+                </div>
             </div>
         </div>
 

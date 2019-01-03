@@ -22,20 +22,17 @@
  * 关于主类 calendar的样式
  */
 @import url("css/calendar-main.css");
-@import url("css/calendar-list.css");
 
 
 /*
  * 关于我的群组的myGroups的样式
  */
-@import url("css/myGroups-main.css");
 @import url("css/myGroups-list.css");
 
 
 /*
  * 关于我的群组的myGroups的样式
  */
-@import url("css/myPlans-main.css");
 @import url("css/myPlans-list.css");
 
 

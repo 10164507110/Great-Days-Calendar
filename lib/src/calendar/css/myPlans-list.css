@@ -2,7 +2,7 @@
 .myPlans-list{
     font-size: 140%;
     margin-top: 30px;
-    background-color: #ccc;
+    background-color: #eee;
 }
 
 .myPlans-list #myPlans-button{
@@ -15,4 +15,31 @@
     display: block;
     line-height: 180%;
     margin-left: 40px;
+}
+
+
+
+
+
+/* -------------add plans button's style----------- */
+#addPlanBtn button{
+    border-radius: 25px;
+    font-size: 120%;
+    padding: 5px 15px 5px 15px;
+    font-weight: bold;
+}
+
+#addPlanBtn button{
+    margin: 0px 0px 15px 82%;
+    outline: none;
+}
+
+
+
+
+
+
+/* ------------ addPlanForm's Style --------------- */
+#addPlanForm{
+    font-size: 90%;
 }

@@ -8,6 +8,9 @@ import 'dart:html';
   styleUrls: ['calendar_component.css'],
   templateUrl: 'calendar_component.html',
   directives: [
+    materialInputDirectives,
+    MaterialRadioComponent,
+    MaterialRadioGroupComponent,
     NgFor,
     NgIf,
   ],
@@ -15,13 +18,34 @@ import 'dart:html';
 
 class CalendarComponent{
   /*------------------- instance variables --------------------*/
+  /*------------- 日历相关变量 ------------------*/
   List<int> days = new List<int>.filled(42, -1);
   List<String> day_color = new List<String>.filled(42, "lightgrey");
   List<int> month_day = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   List<bool> hasEvent = new List<bool>.filled(42, false);
   int now_day, now_month, now_year;
+
+  /*----- 我的群组有关的变量 -------*/
   bool groupsFlag = true;//默认我的群组展开
+  bool optionsFlag = true;//默认我的群组中选项展开
+  bool addGroupFlag = true;//默认加入群组选项展开
+  
+  /*----- 我的计划有关的变量 -------*/
   bool plansFlag = true;//默认我的计划展开
+  bool showPlan = false;//是否显示表单
+  bool submit = false;//是否提交过
+  bool submitWarning = false;
+
+  String planname = '';//计划名称
+  String plantype = '';//时间点/时间段
+
+  String plandatePoint = '';//日期信息
+  String plantimePoint = '';//具体的时间
+  String plandateBegin = '';//日期信息(时间段起点)
+  String plantimeBegin = '';//具体的时间
+  String plandateEnd = '';//日期信息(时间段终点)
+  String plantimeEnd = '';//具体的时间
+
 
       /* ----- 伪数据库 ----- */
           List<String> groups = ["猪组", "英汉互译分队", "2016级教信班委通知群"];
@@ -41,7 +65,7 @@ class CalendarComponent{
   }
 
   /*---------------------------methods---------------------------*/
-  /*---------- 日历本体相关 ----------*/
+  /*--------------------------- 日历本体相关 -------------------------------*/
   //更新日历
   void calendarUpdate(){
     DateTime firstday = new DateTime.utc(now_year, now_month, 1);
@@ -127,12 +151,88 @@ class CalendarComponent{
     calendarUpdate();
   }
 
-  //点击下拉菜单的开头按钮，收回/展开下拉菜单
+
+
+
+
+
+
+
+ /* ----------------------- 与我的群组相关的函数 -------------------------------*/  
+ //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
+  void dropDownOptions(String option){
+    switch(option){
+      case 'groupOption':{        
+        this.optionsFlag = !this.optionsFlag;
+        if(!optionsFlag)groupsFlag = optionsFlag;
+        break;
+      }
+    }  
+  }
+
+  //点击下拉菜单的开头按钮，收回/展开下拉二级菜单
   void dropDownList(String target){
     switch(target){
       case 'group':this.groupsFlag = !this.groupsFlag;break;
       case 'plan':this.plansFlag = !this.plansFlag;break;
+      case 'addgroup':this.addGroupFlag = !this.addGroupFlag;
     }
+  } 
+
+
+
+
+
+
+
+
+  /* -------------------------- 与我的计划相关的函数 ------------------------------*/
+  //显示我的计划表单
+  void addPlan(){
+    //如果没开，就显示，否则保持显示(保持不变)
+    showPlan = (showPlan) ? showPlan:!showPlan;
+  }
+
+  void clearPlans(){
+    //清空相关变量
+    planname = '';//计划名称
+    plantype = '';//时间点/时间段
+    plandatePoint = ''; plantimePoint = '';
+    plandateBegin = ''; plantimeBegin = '';
+    plandateEnd = ''; plantimeEnd = '';
+  }
+
+  //关闭我的计划表单
+  void closePlan(){
+    clearPlans();
+    submit = false;
+    submitWarning = false;
+    showPlan = false;
+  }
+
+  // 我的计划的表单提交
+  void submitPlan(){
+    //先检查表单
+    if(planname.isEmpty || plantype.isEmpty){
+      submitWarning = true;
+    }else if(plantype == 'point'){
+      submitWarning = (plandatePoint.isEmpty || plantimePoint.isEmpty);
+    }else if(plantype == 'interval'){
+      submitWarning = (plandateBegin.isEmpty || plandateEnd.isEmpty ||
+                       plantimeBegin.isEmpty || plandateEnd.isEmpty);
+    }
+    //再显示错误警告/关闭菜单
+    submit = !submitWarning;
+    showPlan = submitWarning;
+    
+    
+    //模拟数据库，写入
+    if(this.planname.isNotEmpty && submit)
+      plans.add(planname);
+
+
+    //之后，清空相关变量
+    clearPlans();
   }
   
 }
