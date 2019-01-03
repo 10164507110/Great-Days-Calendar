@@ -90,12 +90,22 @@
     position: relative;
 }
 
-/* 当前事件为一个圆点，该圆点的位置与大小修正 */
-.calendar-main .event{
+/* 当前时间点事件为一个圆点，该圆点的位置与大小修正 */
+.calendar-main .plandot{
+    color: skyblue;
     width: 10px;
     position: absolute;
+    margin-top: -20px;
     left: 85%;
-    top: 2%;
+}
+
+/* 当前日期出于长事件(时间段)内，显示一个划线 */
+.calendar-main .plandash{
+    color: skyblue;
+    width: 40px;
+    position: absolute;
+    margin-top: 10px;
+    left: 65%;
 }
 
 /* 今日 */

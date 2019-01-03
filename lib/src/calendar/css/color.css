@@ -49,16 +49,64 @@
 
 
 
+/* 我的计划的颜色 */
+.plancolor-1{ color: #CC3333;}
+.plancolor-2{ color: #FF6600;}
+.plancolor-3{ color: #FFFF66;}
+.plancolor-4{ color: #99CC99;}
+.plancolor-5{ color: #66CCCC;}
+.plancolor-6{ color: #3399CC;}
+.plancolor-7{ color: #CCCCFF;}
+.plancolor-8{ color: #996666;}
+.plancolor-9{ color: #CCCCCC;}
+.plancolor-10{ color: #FF9999;}
+.plancolor-11{ color: #FF9900;}
+.plancolor-12{ color: #FFFF00;}
+.plancolor-13{ color: #CCFF99;}
+.plancolor-14{ color: #339999;}
+.plancolor-15{ color: #CCFFFF;}
+.plancolor-16{ color: #9966CC;}
+.plancolor-17{ color: #FF99CC;}
+.plancolor-18{ color: #666666;}
+
+
+
+/* 我的计划的hover颜色 */
+.hovercolor-1{ color: #CC3333 !important; font-size:150%;}
+.hovercolor-2{ color: #FF6600 !important; font-size:150%;}
+.hovercolor-3{ color: #FFFF66 !important; font-size:150%;}
+.hovercolor-4{ color: #99CC99 !important; font-size:150%;}
+.hovercolor-5{ color: #66CCCC !important; font-size:150%;}
+.hovercolor-6{ color: #3399CC !important; font-size:150%;}
+.hovercolor-7{ color: #CCCCFF !important; font-size:150%;}
+.hovercolor-8{ color: #996666 !important; font-size:150%;}
+.hovercolor-9{ color: #CCCCCC !important; font-size:150%;}
+.hovercolor-10{ color: #FF9999 !important; font-size:150%;}
+.hovercolor-11{ color: #FF9900 !important; font-size:150%;}
+.hoevrcolor-12{ color: #FFFF00 !important; font-size:150%;}
+.hoevrcolor-13{ color: #CCFF99 !important; font-size:150%;}
+.hovercolor-14{ color: #339999 !important; font-size:150%;}
+.hovercolor-15{ color: #CCFFFF !important; font-size:150%;}
+.hovercolor-16{ color: #9966CC !important; font-size:150%;}
+.hovercolor-17{ color: #FF99CC !important; font-size:150%;}
+.hovercolor-18{ color: #666666 !important; font-size:150%;}
+
+
+
+
+
+
+
 /* use in test */
 /* 调试过程中，对主要的几个区域涂背景色，便于区分，观察大小 */
 #logo-zone{
-    background-color: skyblue;
+    background-color: white;
 }
 
 #right-list{
-    background-color: skyblue;
+    background-color: white;
 }
 
 .main{
-    background-color: lightcyan;
+    background-color: #EEE;
 }
