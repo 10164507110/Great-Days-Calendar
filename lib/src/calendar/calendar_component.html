@@ -83,8 +83,8 @@
             <div id="myPlans">
                 <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
                 <ul *ngIf="plansFlag">
-                    <li *ngFor = "let plan of plans; let i = index" class="myPlan">
-                        -&nbsp;&nbsp;{{plan}}
+                    <li *ngFor = "let plan of myplans; let i = index" class="myPlan">
+                        -&nbsp;&nbsp;{{plan.planname}}
                     </li>
                 </ul>
                 <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">
@@ -175,6 +175,11 @@
                     <div *ngIf="submit && plantype=='point'">
                         {{plantimePoint.substring(0,2)}} - {{plantimePoint.substring(3)}}
                     </div>
+                </div>
+                <!-- end form -->
+                <!-- //test zone -->
+                <div>
+                    {{test}}
                 </div>
             </div>
         </div>

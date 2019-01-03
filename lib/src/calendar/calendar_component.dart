@@ -45,24 +45,34 @@ class CalendarComponent{
   String plantimeBegin = '';//具体的时间
   String plandateEnd = '';//日期信息(时间段终点)
   String plantimeEnd = '';//具体的时间
-
+  String test = '';
 
       /* ----- 伪数据库 ----- */
           List<String> groups = ["猪组", "英汉互译分队", "2016级教信班委通知群"];
           List<String> plans = ["看jojob", "搭dart环境"];
+          List<plan> myplans = [
+
+          ];
 
       /* ------------------- */
 
 
   //constructor
   CalendarComponent(){
+    //填充伪数据给myplans - 测试用
+    myplans.add(new plan("看JOJO", "point", "2019-01-07", "18:30"));
+    myplans.add(new plan("搭Dart环境", "point", "2019-01-10", "21:30"));
+    myplans.add(new plan("期末周，苟延残喘", "interval", "2019-01-01", "00:00", "2019-01-17","00:00"));
+
     //初始化将日历设置成当日
     DateTime now = new DateTime.now();
     now_day = now.day;
     now_month = now.month;
     now_year = now.year;
+    test = myplans[0].planname;
     calendarUpdate();
   }
+
 
   /*---------------------------methods---------------------------*/
   /*--------------------------- 日历本体相关 -------------------------------*/
@@ -235,4 +245,26 @@ class CalendarComponent{
     clearPlans();
   }
   
+}
+
+
+class plan{
+  String planname;
+  String plantype;
+  String plantimePoint; String plandatePoint;
+  String plantimeBegin, plantimeEnd;
+  String plandateBegin, plandateEnd;
+
+  //constructor
+  plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
+    this.planname = planname;
+    this.plantype = plantype;
+    if(plantype == 'point'){
+      this.plandatePoint = date1; this.plantimePoint = time1;
+    }else{
+      this.plandateBegin = date1; this.plantimeBegin = time1;
+      this.plandateEnd = date2; this.plantimeEnd = time2;
+    }
+  }
+
 }
