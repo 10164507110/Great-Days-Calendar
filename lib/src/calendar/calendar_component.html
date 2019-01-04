@@ -6,6 +6,16 @@
 
     <div class="col-lg-9 calendar-main" id="main-zone">
         <div id="calendar">
+            <div id="searchDay" class="well">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label">选择日期</label>
+                        <material-input type="date" autoFocus floatingLabel style="width:40%" 
+                           [(ngModel)]="selectDate" ></material-input>
+                    </div>
+                </form>
+                <button class="btn btn-info" (click)="gotoSelectDay()">Go</button>
+            </div>
             <!-- 标题区域：日月/前进后退 -->
             <div class="title">
                 <h1 class="green" id="calendar-title">{{now_month}}月</h1>

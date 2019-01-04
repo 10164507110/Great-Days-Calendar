@@ -15,7 +15,7 @@ import 'package:angular_router/angular_router.dart';
     MaterialRadioGroupComponent,
     NgFor,
     NgIf,
-    routerDirectives
+    routerDirectives,
   ],
 )
 
@@ -27,18 +27,21 @@ class CalendarComponent{
   List<int> month_day = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   List<bool> hasEvent = new List<bool>.filled(42, false);
   List<String> eventColor = new List<String>.filled(42, "plancolor-");//日历上圆点的颜色
+  String selectDate = '';
   int now_day, now_month, now_year;
+
 
   /*----- 我的群组有关的变量 -------*/
   bool groupsFlag = true;//默认我的群组展开
   bool optionsFlag = true;//默认我的群组中选项展开
   bool addGroupFlag = true;//默认加入群组选项展开
   
+
   /*----- 我的计划有关的变量 -------*/
   List<String> plancolor = [];
   List<String> dotOrDash = [];
   List<String> hovercolor = new List<String>.filled(42, "hovercolor-");
-  final int COLORNUM = 18;//颜色数目
+  final int COLORNUM = 18;//默认的颜色数目
   bool plansFlag = true;//默认我的计划展开
   bool showPlan = false;//是否显示表单
   bool submit = false;//是否提交过
@@ -60,6 +63,7 @@ class CalendarComponent{
           List<plan> myplans = [];
 
       /* ------------------- */
+
 
 
   //constructor
@@ -130,6 +134,8 @@ class CalendarComponent{
 
   }//close calendarUpdate()
 
+
+  //根据我的计划里的计划，给日期增加事件标记(时间点)
   void clearEvent(){
     for(int i=0; i<42; i++){
       eventColor[i] = "plancolor-";
@@ -190,15 +196,6 @@ class CalendarComponent{
     calendarUpdate();
   }
 
-  //点击添加事件(伪)
-  void addEvent(int i){
-    hasEvent[i] = true;
-    // Element plans = querySelector("#plans");
-    // Element li = new Element.li();
-    // li.innerHtml = "Hello World";
-    // plans.append(li);
-  }
-  
   //点击refresh按钮，重置日历
   void refresh(){
     DateTime now = new DateTime.now();
@@ -208,7 +205,7 @@ class CalendarComponent{
     calendarUpdate();
   }
 
-  //返回这一天在这个日历上的index
+  //返回这一天在这个日历上的index(42以内的数)
   int getDayIndex(int day){
     DateTime firstday = new DateTime.utc(now_year, now_month, 1);
     int first_weekday = firstday.weekday;
@@ -217,7 +214,18 @@ class CalendarComponent{
     return now_pos + day - 1;
   }
 
-
+  //前往选择的日期
+  void gotoSelectDay(){
+    if(!selectDate.isEmpty){
+      //2019-01-04
+      String year = selectDate.substring(0,4);
+      String month = selectDate.substring(5,7);
+      now_year = int.parse(year);
+      now_month = int.parse(month);
+      calendarUpdate();
+      selectDate = '';
+    }
+  }
 
 
 
@@ -355,9 +363,9 @@ class CalendarComponent{
     //如果没开，就显示，否则保持显示(保持不变)
     showPlan = (showPlan) ? showPlan:!showPlan;
   }
-
-  void clearPlans(){
-    //清空相关变量
+  
+  //清空相关变量
+  void clearPlans(){   
     planname = '';//计划名称
     plantype = '';//时间点/时间段
     plandatePoint = ''; plantimePoint = '';
@@ -427,7 +435,7 @@ class CalendarComponent{
 
 
 
-
+/* --------------------- 我的计划的类 ----------------------- */
 class plan{
   String planname;
   String plantype;
@@ -439,6 +447,7 @@ class plan{
   plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
     this.planname = planname;
     this.plantype = plantype;
+
     if(plantype == 'point'){
       this.plandatePoint = date1; this.plantimePoint = time1;
     }else if(plantype == 'interval'){
