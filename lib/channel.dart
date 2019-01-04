@@ -1,4 +1,5 @@
-
+import 'package:calendar/mailer/mailer.dart';
+import 'package:calendar/smtp_server/ecnustumail.dart';
 import 'package:calendar/user.dart';
 
 import 'my_server.dart';
@@ -37,6 +38,8 @@ class MyServerChannel extends ApplicationChannel {
         .route("/login").link(()=>LoginController());
     router
         .route("/register").link(()=>RegisterController());
+    router
+        .route("/sendemail").link(()=>SendEmailController());
 
     return router;
   }
@@ -65,6 +68,52 @@ class RegisterController extends ResourceController{
     if(ifregister == true){
       return Response.ok({"success":"register success"});
     }else return Response.badRequest(body: {"error": "register failed"});
+  }
+
+}
+
+class SendEmailController extends ResourceController{
+
+  @Operation.post()
+  Future<Response> register(@Bind.body() User testuser) async {
+    String identify_Code = testuser.identify_code;
+    String mailbox = testuser.mailbox;
+    String stmpusername = "10164507121@stu.ecnu.edu.cn";
+    String stmpassword = "Qxy071561";
+    print(mailbox);
+    List<String> tos = [mailbox]; //收件人
+
+    //if tos is Empty, send myself
+    if (tos.isEmpty)
+      tos.add(stmpusername);
+
+    final smtpServer = ecnustumail(stmpusername, stmpassword);
+    Iterable<Address> toAd(Iterable<String> addresses) =>
+        (addresses ?? <String>[]).map((a) => new Address(a));
+
+    final message = new Message()
+      ..from = new Address('10164507121@stu.ecnu.edu.cn')
+      ..recipients.addAll(toAd(tos))
+      ..subject = 'Test Dart Mailer library :: 😀 :: ${new DateTime.now()}'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>Hey! Here's your identity code:</h1>"+identify_Code;
+
+    final sendReports = await send(message, smtpServer);
+//    sendReports.forEach((sr) {
+//      if (sr.sent) {
+//        print('Message sent');
+//        print('ok');
+//        return Response.ok({"success":"send success"});
+//      }
+//      else {
+//        print('Message not sent.');
+//        for (var p in sr.validationProblems) {
+//          print('Problem: ${p.code}: ${p.msg}');
+//          return Response.badRequest(body: {"error": "send failed"});
+//        }
+//      }
+//    });
+
   }
 
 }

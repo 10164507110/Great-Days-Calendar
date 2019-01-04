@@ -1,7 +1,4 @@
-import 'dart:io';
 
-import 'package:args/args.dart';
-import 'package:logging/logging.dart';
 import 'package:calendar/mailer/mailer.dart';
 import 'package:calendar/smtp_server/ecnustumail.dart';
 

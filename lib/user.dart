@@ -8,6 +8,7 @@ class User extends Serializable {
   String username;
   String password;
   String mailbox;
+  String identify_code;
 
   static Future<List> getAll()async {
     List results;
@@ -58,6 +59,7 @@ class User extends Serializable {
     username = map['username'];
     password = map['password'];
     mailbox = map['mailbox'];
+    identify_code = map['identify_code'];
   }
 
   @override
@@ -66,7 +68,8 @@ class User extends Serializable {
 //      'id': id,
       'username': username,
       'password':password,
-      'mailbox':mailbox
+      'mailbox':mailbox,
+      'identify_code':identify_code
     };
   }
 
