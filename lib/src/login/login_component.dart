@@ -41,10 +41,12 @@ class LoginComponent{
   login(){
     var client = new http.Client();
     var url = "http://localhost:8002/login";
-    var body = json.encode({"name": username,"password": password});
+    var body = json.encode({"username": username,"password": password});
     var headers = {
       "content-type":"application/json"
     };
+
+    print(username);
 
     Future<NavigationResult> gotoCalendar() =>
       _router.navigate(RoutePaths.calendar.toUrl());

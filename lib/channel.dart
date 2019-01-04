@@ -1,5 +1,3 @@
-import 'package:calendar/mailer/mailer.dart';
-import 'package:calendar/smtp_server/ecnustumail.dart';
 import 'package:calendar/user.dart';
 
 import 'my_server.dart';
@@ -53,8 +51,12 @@ class LoginController extends ResourceController{
     if(testuser.username == '' || testuser.password == '') {
       return Response.badRequest(body: {"error": "username and password required."});
     }
-    var selectUserPassword = await User.selectPassword(testuser.username);
-    if(selectUserPassword != "wrong" && selectUserPassword == testuser.password){
+
+    String username =testuser.username;
+
+    var selectUserPassword = await User.selectPassword(username);
+    print(selectUserPassword);
+    if(selectUserPassword == testuser.password){
       return Response.ok({"success":"register success"});
     }else return Response.badRequest(body: {"error": "wrong username or password."});
   }
@@ -73,46 +75,23 @@ class RegisterController extends ResourceController{
 }
 
 class SendEmailController extends ResourceController{
-
+//  static const ifsend = "n";
   @Operation.post()
   Future<Response> register(@Bind.body() User testuser) async {
     String identify_Code = testuser.identify_code;
     String mailbox = testuser.mailbox;
-    String stmpusername = "10164507121@stu.ecnu.edu.cn";
-    String stmpassword = "Qxy071561";
-    print(mailbox);
-    List<String> tos = [mailbox]; //收件人
-
-    //if tos is Empty, send myself
-    if (tos.isEmpty)
-      tos.add(stmpusername);
-
-    final smtpServer = ecnustumail(stmpusername, stmpassword);
-    Iterable<Address> toAd(Iterable<String> addresses) =>
-        (addresses ?? <String>[]).map((a) => new Address(a));
-
-    final message = new Message()
-      ..from = new Address('10164507121@stu.ecnu.edu.cn')
-      ..recipients.addAll(toAd(tos))
-      ..subject = 'Test Dart Mailer library :: 😀 :: ${new DateTime.now()}'
-      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-      ..html = "<h1>Hey! Here's your identity code:</h1>"+identify_Code;
-
-    final sendReports = await send(message, smtpServer);
-//    sendReports.forEach((sr) {
-//      if (sr.sent) {
-//        print('Message sent');
-//        print('ok');
-//        return Response.ok({"success":"send success"});
-//      }
-//      else {
-//        print('Message not sent.');
-//        for (var p in sr.validationProblems) {
-//          print('Problem: ${p.code}: ${p.msg}');
-//          return Response.badRequest(body: {"error": "send failed"});
-//        }
-//      }
-//    });
+//    String ifsend;
+//    print(User.sendEmail(identify_Code, mailbox).toString());
+//    var ifsend = await User.sendEmail(identify_Code, mailbox);
+    var ifsend = await User.sendEmail(identify_Code, mailbox);
+    print(ifsend);
+//    print(await User.sendEmail(identify_Code, mailbox));
+    if(ifsend == "y"){
+      return Response.ok({"success":"send success"});
+    }
+    else if(User.sendEmail(identify_Code, mailbox).toString() == "n"){
+      return Response.badRequest(body: {"error": "send failed"});
+    }
 
   }
 

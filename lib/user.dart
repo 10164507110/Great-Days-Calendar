@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:aqueduct/aqueduct.dart';
 import 'package:sqljocky5/sqljocky.dart';
-
+import 'package:calendar/mailer/mailer.dart';
+import 'package:calendar/smtp_server/ecnustumail.dart';
+import 'channel.dart';
 class User extends Serializable {
 
   int id;
@@ -36,10 +38,11 @@ class User extends Serializable {
     return results;
   }
 
-  static Future<String> selectPassword(username)async {
+  static Future<String> selectPassword(String username)async {
     var stuList;
-    var password;
+    String password;
     stuList = await getAll();
+    print(username);
     for(int i=0;i<stuList.length;i++){
       if(stuList[i][1]==username)
         password = stuList[i][3];
@@ -51,6 +54,50 @@ class User extends Serializable {
       return password;
     }
 
+  }
+
+  static sendEmail(String code, String mailbox) async {
+
+    String stmpusername = "10164507121@stu.ecnu.edu.cn";
+    String stmpassword = "Qxy071561";
+    print(mailbox);
+    String ifsend = "n";
+    List<String> tos = [mailbox]; //收件人
+
+    //if tos is Empty, send myself
+    if (tos.isEmpty)
+      tos.add(stmpusername);
+
+    final smtpServer = ecnustumail(stmpusername, stmpassword);
+    Iterable<Address> toAd(Iterable<String> addresses) =>
+        (addresses ?? <String>[]).map((a) => new Address(a));
+
+    final message = new Message()
+      ..from = new Address('10164507121@stu.ecnu.edu.cn')
+      ..recipients.addAll(toAd(tos))
+      ..subject = 'Test Dart Mailer library :: 😀 :: ${new DateTime.now()}'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>Hey! Here's your identity code:</h1>"+code;
+
+    final sendReports = await send(message, smtpServer);
+    sendReports.forEach((sr) {
+      if (sr.sent) {
+        print('Message sent');
+        ifsend = "y";
+
+        print(ifsend);
+        return ifsend;
+//        return Response.ok({"success":"send success"});
+      }
+      else {
+        print('Message not sent.');
+        for (var p in sr.validationProblems) {
+          print('Problem: ${p.code}: ${p.msg}');
+//          return ifsend;
+//          return Response.badRequest(body: {"error": "send failed"});
+        }
+      }
+    });
   }
 
   @override
