@@ -75,24 +75,18 @@ class RegisterController extends ResourceController{
 }
 
 class SendEmailController extends ResourceController{
-//  static const ifsend = "n";
+
   @Operation.post()
   Future<Response> register(@Bind.body() User testuser) async {
     String identify_Code = testuser.identify_code;
     String mailbox = testuser.mailbox;
-//    String ifsend;
-//    print(User.sendEmail(identify_Code, mailbox).toString());
-//    var ifsend = await User.sendEmail(identify_Code, mailbox);
-    var ifsend = await User.sendEmail(identify_Code, mailbox);
+    var ifsend = "y";
+    ifsend = await User.sendEmail(identify_Code, mailbox);
     print(ifsend);
-//    print(await User.sendEmail(identify_Code, mailbox));
     if(ifsend == "y"){
       return Response.ok({"success":"send success"});
     }
-    else if(User.sendEmail(identify_Code, mailbox).toString() == "n"){
-      return Response.badRequest(body: {"error": "send failed"});
-    }
-
+    else return Response.badRequest(body: {"error": "send failed"});
   }
 
 }

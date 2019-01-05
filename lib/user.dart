@@ -56,7 +56,7 @@ class User extends Serializable {
 
   }
 
-  static sendEmail(String code, String mailbox) async {
+  static Future<String> sendEmail(String code, String mailbox) async {
 
     String stmpusername = "10164507121@stu.ecnu.edu.cn";
     String stmpassword = "Qxy071561";
@@ -84,20 +84,15 @@ class User extends Serializable {
       if (sr.sent) {
         print('Message sent');
         ifsend = "y";
-
-        print(ifsend);
-        return ifsend;
-//        return Response.ok({"success":"send success"});
       }
       else {
         print('Message not sent.');
         for (var p in sr.validationProblems) {
           print('Problem: ${p.code}: ${p.msg}');
-//          return ifsend;
-//          return Response.badRequest(body: {"error": "send failed"});
         }
       }
     });
+    return ifsend;
   }
 
   @override
