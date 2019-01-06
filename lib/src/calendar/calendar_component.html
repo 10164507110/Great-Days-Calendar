@@ -66,27 +66,16 @@
 
 
     <div class="col-lg-3" id="right-list">
-
+        
         <div class="myGroups-list">
             <div id="myGroups">
-                <div id="myGroups-button" (click)="dropDownOptions('groupOption')">我的群组</div>
-                    <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('group')">我所在的群组</div>
-                        <ul *ngIf="groupsFlag">                 
-                            <li *ngFor = "let group of groups; let i = index" class="myGroup">
-                                -&nbsp;&nbsp;{{group}}
-                            </li>
-                        </ul>
-                <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('addgroup')">加入群组</div>
-                <!--<ul *ngIf="optionsFlag" >
-                    <li *ngFor = "let optionsInMyGroup of optionsInMyGroups; let i = index" class ="myGroup" (click)="dropDownList('group')"> 
-                        -&nbsp;&nbsp;{{optionsInMyGroup}}
-                        <ul *ngIf="groupsFlag">                 
-                            <li *ngFor = "let group of groups; let i = index" class="myGroup">
-                                -&nbsp;&nbsp;{{group}}
-                            </li>
-                        </ul>
-                    </li>
-                </ul>  -->
+                <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
+                    <ul *ngIf="groupsFlag">                 
+                        <li *ngFor = "let group of mygroups; let i = index" class="myGroup">
+                            -&nbsp;&nbsp;{{group.groupname}}
+                        </li>
+                    </ul>
+                <!-- <div *ngIf="optionsFlag" id="myGroups-smallbutton" (click)="dropDownList('addgroup')">加入群组</div> -->
             </div>
         </div>
 
@@ -194,6 +183,52 @@
             </div>
         </div>
 
+        <div class="greatDay">
+            <div id="commonTime-button" (click)="dropDownList('common')">寻找共有时间</div>
+            <form class="form-horizontal" *ngIf="commonTimeFlag">
+                <div class="form-group">
+                    <label class="control-label col-sm-4">选择群组</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" (change)="changeGroup($event.target.value)" id="selectGroup"> 
+                            <option value=""> -- 请选择 -- </option>
+                            <option *ngFor="let group of mygroups" [value]="group.groupname">{{group.groupname}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">日期范围</label>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">起:</label>
+                            <material-input type="date" autoFocus floatingLabel style="width:60%" 
+                                [(ngModel)]="beginDate"></material-input>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">终:</label>
+                            <material-input type="date" autoFocus floatingLabel style="width:60%" 
+                                [(ngModel)]="endDate"></material-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">时间段</label>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <material-input type="time" autoFocus floatingLabel style="width:30%" 
+                                [(ngModel)]="beginTime"></material-input>
+                            &nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <material-input type="time" autoFocus floatingLabel style="width:30%" 
+                                [(ngModel)]="endTime"></material-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12 btn-group">
+                        <button type="button" class="btn btn-info" (click)="findGreatDay()">Great Day!</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>    
 
 </div> <!-- end class main -->

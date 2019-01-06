@@ -1,6 +1,7 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'dart:html';
+import 'dart:math';
 
 import 'package:angular_router/angular_router.dart';
 
@@ -32,9 +33,9 @@ class CalendarComponent{
 
 
   /*----- 我的群组有关的变量 -------*/
-  bool groupsFlag = true;//默认我的群组展开
-  bool optionsFlag = true;//默认我的群组中选项展开
-  bool addGroupFlag = true;//默认加入群组选项展开
+  bool groupsFlag = false;//默认我的群组展开
+  // bool optionsFlag = true;//默认我的群组中选项展开
+  // bool addGroupFlag = true;//默认加入群组选项展开
   
 
   /*----- 我的计划有关的变量 -------*/
@@ -57,17 +58,31 @@ class CalendarComponent{
   String plandateEnd = '';//日期信息(时间段终点)
   String plantimeEnd = '';//具体的时间
 
-      /* ----- 伪数据库 ----- */
-          List<String> groups = ["猪组", "英汉互译分队", "2016级教信班委通知群"];
-          List<String> plans = ["看jojob", "搭dart环境"];
-          List<plan> myplans = [];
+  String myName = "stupig";//我的用户名
+  List<Group> mygroups = [];//我的群组
+  List<Plan> myplans = [];//我的计划
 
-      /* ------------------- */
+
+  /*----- 计算公共时间有关的变量 -------*/
+  bool commonTimeFlag = false;//默认这个区域不展开
+  String selectGroup = '';
+  String beginDate = "", endDate = "";
+  String beginTime = "", endTime = "";
+
+      /* ----------- 伪数据库 ----------- */
+          List<User> users = [];
+          List<Group> groups = [];
+
+      /* ------------------------------- */
 
 
 
   //constructor
   CalendarComponent(){
+    //创建伪数据 - 测试用
+    createTheFakeDatas();
+    //填充伪数据给mygroups - 测试用
+    fillMygroups();
     //填充伪数据给myplans - 测试用
     fillMyplans();
 
@@ -132,6 +147,8 @@ class CalendarComponent{
     //将我的计划里的计划按时间标记出来
     myplanUpdate();
 
+    commonTimeUpdate();//将计算公共时间区域的变量更新
+
   }//close calendarUpdate()
 
 
@@ -160,13 +177,35 @@ class CalendarComponent{
           hasEvent[getDayIndex(day)] = true;
           if(eventColor[getDayIndex(day)] != "plancolor-"){
             for(int j=i-1; j>=0; j--){
-              if(myplans[j].plantype=='point' && myplans[j].plandatePoint == date)
+              if(myplans[j].plantype=='point' && myplans[j].plandatePoint == date
+              || myplans[j].plantype=='interval' && myplans[j].plandateEnd == date)
                 plancolor[j] = planColor(i);
             }//end for
           }//end if(!=plancolor-)
           eventColor[getDayIndex(day)] = planColor(i);
         }
-      }//end if
+      }else if(myplans[i].plantype == 'interval'){
+        String date = myplans[i].plandateEnd;
+        //2019-01-03
+        String yearStr = date.substring(0,4);
+        String monthStr = date.substring(5,7);
+        String dayStr = date.substring(8);
+        int year = int.parse(yearStr);
+        int month = int.parse(monthStr);
+        int day = int.parse(dayStr);
+
+        if(year == now_year && month == now_month){
+          hasEvent[getDayIndex(day)] = true;
+          if(eventColor[getDayIndex(day)] != "plancolor-"){
+            for(int j=i-1; j>=0; j--){
+              if(myplans[j].plantype=='point' && myplans[j].plandatePoint == date
+              || myplans[j].plantype=='interval' && myplans[j].plandateEnd == date)
+                plancolor[j] = planColor(i);
+            }//end for
+          }//end if(!=plancolor-)
+          eventColor[getDayIndex(day)] = planColor(i);
+        }
+      }
     }//end for
   }
 
@@ -241,25 +280,56 @@ class CalendarComponent{
 
 
  /* ----------------------- 与我的群组相关的函数 -------------------------------*/  
- //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
-  void dropDownOptions(String option){
-    switch(option){
-      case 'groupOption':{        
-        this.optionsFlag = !this.optionsFlag;
-        if(!optionsFlag)groupsFlag = optionsFlag;
+ //填充“我的群组”的信息给myGroups数组
+  void fillMygroups(){
+    for(int i=0; i<users.length; i++){
+      if(users[i].username == this.myName){
+        this.mygroups = users[i].userGroups;
         break;
       }
-    }  
+    }
+
+    // mygroups.add(new Group("pigs"));
   }
+
+
+//  //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
+//   void dropDownOptions(String option){
+//     switch(option){
+//       case 'groupOption':{        
+//         this.optionsFlag = !this.optionsFlag;
+//         if(!optionsFlag)groupsFlag = optionsFlag;
+//         break;
+//       }
+//     }  
+//   }
 
   //点击下拉菜单的开头按钮，收回/展开下拉二级菜单
   void dropDownList(String target){
+
     switch(target){
       case 'group':this.groupsFlag = !this.groupsFlag;break;
       case 'plan':this.plansFlag = !this.plansFlag;break;
-      case 'addgroup':this.addGroupFlag = !this.addGroupFlag;
+      case 'common':this.commonTimeFlag = !this.commonTimeFlag;break;
+      // case 'addgroup':this.addGroupFlag = !this.addGroupFlag;break;
     }
+    // if(target != 'addgroup')
+    dropDownListControl(target);
   } 
+
+  void dropDownListControl(String target){
+    if(groupsFlag==false && plansFlag==false && commonTimeFlag==false) return;
+    else{
+      groupsFlag = false;
+      plansFlag = false;
+      commonTimeFlag = false;
+      switch(target){
+        case 'group':groupsFlag = true;break;
+        case 'plan':plansFlag = true;break;
+        case 'common':commonTimeFlag = true;break;
+      }
+    }
+  }
 
 
 
@@ -278,9 +348,21 @@ class CalendarComponent{
   /* -------------------------- 与我的计划相关的函数 ------------------------------*/
   //填充我的计划(应该从数据库读入)
   void fillMyplans(){
-    myplans.add(new plan("看JOJO", "point", "2019-01-07", "18:30"));
-    myplans.add(new plan("搭Dart环境", "point", "2019-01-10", "21:30"));
-    myplans.add(new plan("期末周，苟延残喘", "interval", "2019-01-01", "00:00", "2019-01-17","00:00"));
+
+    for(int i=0; i<users.length; i++){
+      if(users[i].username == this.myName){
+        this.myplans= users[i].userPlans;
+        break;
+      }
+    }
+    // myplans.add(new Plan("看JOJO", "interval", "2019-01-07", "18:30", "2019-01-07", "23:30"));
+    // myplans.add(new Plan("网络教育应用考试", "interval", "2019-01-10", "15:00", "2019-01-10", "17:00"));
+    // myplans.add(new Plan("提交教育测量报告", "point", "2019-01-13", "00:00"));
+    // myplans.add(new Plan("闭关复习投资银行学公司财务管理与保险学", "interval", "2019-01-03", "00:00", "2019-01-05", "00:00"));
+    // myplans.add(new Plan("做教育游戏", "point", "2019-01-06", "00:00"));
+    // myplans.add(new Plan("外出打工，赚钱养家", "interval", "2019-01-05", "18:30", "2019-01-05","20:30"));
+    // myplans.add(new Plan("回老家过年！！！", "point", "2019-01-17", "08:30"));
+
 
     //设置颜色
     fillPlanColor();
@@ -400,11 +482,11 @@ class CalendarComponent{
     //模拟数据库，写入
     if(this.planname.isNotEmpty && submit){
       // plans.add(planname);
-      plan newplan = null;
+      Plan newplan = null;
       if(this.plantype == 'point'){
-        newplan = new plan(planname, "point", plandatePoint, plantimePoint);
+        newplan = new Plan(planname, "point", plandatePoint, plantimePoint);
       }else if(this.plantype == 'interval'){
-        newplan = new plan(planname, "interval", plandateBegin, plantimeBegin, plandateEnd, plantimeEnd);
+        newplan = new Plan(planname, "interval", plandateBegin, plantimeBegin, plandateEnd, plantimeEnd);
       }
       myplans.add(newplan);
       fillPlanColor();//更新颜色
@@ -418,6 +500,110 @@ class CalendarComponent{
     clearPlans();
   }
   
+
+
+
+
+
+
+
+
+
+  /* -------------------------- 与计算公共时间相关的函数 ------------------------------*/
+  void commonTimeUpdate(){
+    //设置默认的beginDate为今天
+    DateTime nowtime = new DateTime.now();
+    beginDate = nowtime.year.toString() + '-' + (nowtime.month~/10).toString()
+        + (nowtime.month%10).toString() + '-' + (nowtime.day~/10).toString()
+        + (nowtime.day%10).toString();
+
+    //设置默认的时间段
+    beginTime = "10:00"; endTime = "20:00";
+
+  } 
+
+  void changeGroup(String value){
+    selectGroup = value;
+  }
+
+  //求出公共时间
+  void findGreatDay(){
+
+  }
+
+
+
+
+
+
+  //管理伪数据
+  createTheFakeDatas(){
+    //myid = stupig happig jumpig sleepig champig 
+    //创建了五名角色
+    User stupig = new User("stupig");
+    User happig = new User("happig");
+    User jumpig = new User("jumpig");
+    User sleepig = new User("sleepig");
+    User champig = new User("champig");
+
+    //填充各自的计划
+    /* stupig's plans*/
+    stupig.addPlan(new Plan("看JOJO", "interval", "2019-01-07", "18:30", "2019-01-07", "23:30"));
+    stupig.addPlan(new Plan("网络教育应用考试", "interval", "2019-01-10", "15:00", "2019-01-10", "17:00"));
+    stupig.addPlan(new Plan("提交教育测量报告", "point", "2019-01-13", "00:00"));
+    stupig.addPlan(new Plan("闭关复习投资银行学公司财务管理与保险学", "interval", "2019-01-03", "00:00", "2019-01-05", "00:00"));
+    stupig.addPlan(new Plan("做教育游戏", "point", "2019-01-06", "00:00"));
+    stupig.addPlan(new Plan("外出打工，赚钱养家", "interval", "2019-01-05", "18:30", "2019-01-05","20:30"));
+    stupig.addPlan(new Plan("回老家过年！！！", "point", "2019-01-17", "08:30"));
+    /* happig's plans*/
+    happig.addPlan(new Plan("补《海王》", "point", "2019-01-01", "18:30"));
+    happig.addPlan(new Plan("在宿舍补番，拒不开会", "interval", "2019-01-05", "00:00", "2019-01-06", "00:00"));
+    happig.addPlan(new Plan("提交教育测量报告", "point", "2019-01-13", "00:00"));
+    happig.addPlan(new Plan("去环球港吃喝玩乐", "interval", "2019-01-09", "13:00", "2019-01-09", "20:00"));
+    /* jumpig's plans */
+    jumpig.addPlan(new Plan("点外卖", "point", "2019-01-07", "12:30"));
+    jumpig.addPlan(new Plan("点外卖", "point", "2019-01-08", "12:30"));
+    jumpig.addPlan(new Plan("寄快递", "point", "2019-01-15", "14:00"));
+    jumpig.addPlan(new Plan("拿快递", "point", "2019-01-07", "13:00"));
+    jumpig.addPlan(new Plan("打印报告", "point", "2019-01-12", "14:00"));
+    jumpig.addPlan(new Plan("去环球港吃一顿", "interval", "2019-01-09", "13:00", "2019-01-09","20:00"));
+    /* sleepig's plans */
+    sleepig.addPlan(new Plan("起床吃饭", "point", "2019-01-05", "12:30"));
+    sleepig.addPlan(new Plan("睡觉", "interval", "2019-01-05", "13:30", "2019-01-05", "16:00"));
+    sleepig.addPlan(new Plan("起床吃饭", "point", "2019-01-05", "16:00"));
+    sleepig.addPlan(new Plan("睡觉", "interval", "2019-01-05", "17:00", "2019-01-05", "20:00"));
+    sleepig.addPlan(new Plan("起床开黑", "interval", "2019-01-05", "20:00", "2019-01-06", "05:00"));
+    sleepig.addPlan(new Plan("睡觉", "interval", "2019-01-05", "13:30", "2019-01-05", "16:00"));
+    /* champig's plans */
+    champig.addPlan(new Plan("看JOJO", "interval", "2019-01-07", "18:30", "2019-01-07", "23:30"));
+    champig.addPlan(new Plan("网络教育应用考试", "interval", "2019-01-10", "15:00", "2019-01-10", "17:00"));
+    champig.addPlan(new Plan("提交教育测量报告", "point", "2019-01-13", "00:00"));
+    champig.addPlan(new Plan("不明原因外出", "interval", "2019-01-08", "08:00", "2019-01-10", "15:00"));
+    champig.addPlan(new Plan("双休日拒不开会", "interval", "2019-01-12", "00:00", "2019-01-13","23:59"));
+    champig.addPlan(new Plan("回老家过年！！！", "point", "2019-01-17", "08:30"));
+
+    //填充群组信息
+    /*猪组，英汉互译组，2016级教信班委通知群，一起去环球港大吃大喝 */
+    Group one = new Group("猪组");
+    one.addUser(stupig);one.addUser(happig);one.addUser(jumpig);one.addUser(sleepig);one.addUser(champig);
+    Group two = new Group("英汉互译组");
+    two.addUser(stupig);two.addUser(happig);two.addUser(jumpig);two.addUser(sleepig);two.addUser(champig);
+    Group three = new Group("一起去环球港大吃大喝");
+    three.addUser(happig);three.addUser(jumpig);
+    Group four = new Group("2016级教信班委群");
+    four.addUser(stupig);four.addUser(happig);four.addUser(jumpig);four.addUser(champig);
+
+    stupig.addGroup(one);stupig.addGroup(two);stupig.addGroup(four);
+    happig.addGroup(one);happig.addGroup(two);happig.addGroup(three);happig.addGroup(four);
+    jumpig.addGroup(one);jumpig.addGroup(two);jumpig.addGroup(three);jumpig.addGroup(four);
+    sleepig.addGroup(one);sleepig.addGroup(two);
+    champig.addGroup(one);champig.addGroup(two);champig.addGroup(four);
+
+    this.users.add(stupig);this.users.add(jumpig);
+    this.users.add(happig);this.users.add(sleepig);this.users.add(champig);
+    this.groups.add(one);this.groups.add(two);this.groups.add(three);this.groups.add(four);
+    
+  }
 }
 
 
@@ -432,11 +618,15 @@ class CalendarComponent{
 
 
 
-
+/*
+ * 这里的一些类的功能是相关数据在数据库存储的结构相关
+ * 在测试阶段，作为伪数据的结构
+ * 正式使用时候，应该需要将数据库相关数据读入，并组装成以下这些类进行使用
+ */
 
 
 /* --------------------- 我的计划的类 ----------------------- */
-class plan{
+class Plan{
   String planname;
   String plantype;
   String plantimePoint, plandatePoint;
@@ -444,7 +634,7 @@ class plan{
   String plandateBegin, plandateEnd;
 
   //constructor
-  plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
+  Plan(String planname, String plantype, String date1, String time1, [String date2, String time2, String]){
     this.planname = planname;
     this.plantype = plantype;
 
@@ -453,6 +643,53 @@ class plan{
     }else if(plantype == 'interval'){
       this.plandateBegin = date1; this.plantimeBegin = time1;
       this.plandateEnd = date2; this.plantimeEnd = time2;
+    }
+  }
+
+}
+
+
+/* --------------------- 群组的类 ----------------------- */
+class Group{
+  String groupname;
+  List<User> groupMembers;//该群组的用户集合
+  
+  //constructor
+  Group(String groupname){
+    this.groupname = groupname;
+    this.groupMembers = [];
+  }
+
+  void addUser(User user){
+    if(user != null && !this.groupMembers.contains(user))
+      this.groupMembers.add(user);
+  }
+}
+
+/* --------------------- 用户的类 ----------------------- */
+class User{
+  String username;
+  //这里可能还有更多与用户相关的个人信息，例如性别等
+
+  List<Plan> userPlans;//该用户的计划
+  List<Group> userGroups;//该用户的群组
+
+  //constructor
+  User(String username){
+    this.username = username;
+    this.userPlans = [];
+    this.userGroups = [];
+  }
+
+  void addPlan(Plan plan){
+    if(plan != null && !this.userPlans.contains(plan)){
+      this.userPlans.add(plan);
+    }
+  }
+
+  void addGroup(Group group){
+    if(group != null && !this.userGroups.contains(group)){
+      this.userGroups.add(group);
     }
   }
 

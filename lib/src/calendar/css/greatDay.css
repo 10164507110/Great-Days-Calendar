@@ -1,0 +1,13 @@
+/*
+ * greatDay.css ver.19-1-6
+ * 该CSS负责处理在右侧栏下方的计算公共时间的区域的样式
+ */
+
+
+
+.greatDay #commonTime-button{
+    font-size: 140%;
+    font-weight: bold;
+    color:white;
+    background-color: skyblue;
+}
