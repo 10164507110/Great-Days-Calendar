@@ -2,8 +2,11 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'dart:html';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:angular_router/angular_router.dart';
+
 
 
 @Component(
@@ -70,6 +73,7 @@ class CalendarComponent{
 
   /*----- 计算公共时间有关的变量 -------*/
   bool commonTimeFlag = false;//默认这个区域不展开
+  bool commonTimeResultFlag = true;//true是不显示，false是显示！
   String selectGroup = '';
   String beginDate = "", endDate = "";
   String beginTime = "", endTime = "";
@@ -108,6 +112,29 @@ class CalendarComponent{
 
 
   /*---------------------------methods---------------------------*/
+  void sendEmail(){
+    var client = new http.Client();
+    var url = "http://localhost:8002/senddeademail";
+    var body = json.encode(
+        {"mailbox":"707132127@qq.com", "daealine": 5});
+    var headers = {
+      "content-type": "application/json"
+    };
+
+    client.post(
+        url,
+        headers: headers,
+        body: body)
+        .then((response) {
+      if (response.statusCode == 200) {
+        window.alert("发送成功");
+      }
+      else
+        window.alert("发送失败");
+    })
+        .whenComplete(client.close);
+  }
+
   /*--------------------------- 日历本体相关 -------------------------------*/
   //更新日历
   void calendarUpdate(){
@@ -544,13 +571,28 @@ class CalendarComponent{
 
   } 
 
+  //监听群组选项的变化
   void changeGroup(String value){
     selectGroup = value;
   }
 
+  //重置公共时间表单
+  void resetGreatDay(){
+    
+  }
+
   //求出公共时间
   void findGreatDay(){
+    //先表单检查
+    
+    this.commonTimeResultFlag = !this.commonTimeResultFlag;
+  }
 
+  //从结果界面返回表单界面
+  void returnGreatDayForm(){
+    //清理结果
+
+    this.commonTimeResultFlag = !this.commonTimeResultFlag;
   }
 
 
@@ -718,3 +760,6 @@ class User{
 }
 
 
+class Result{
+  
+}
