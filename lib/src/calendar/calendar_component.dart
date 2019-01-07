@@ -109,7 +109,7 @@ class CalendarComponent{
   /*---------------------------methods---------------------------*/
   void sendEmail(){
     var client = new http.Client();
-    var url = "http://localhost:8002/sendDeadEmail";
+    var url = "http://localhost:8002/senddeademail";
     var body = json.encode(
         {"mailbox":"707132127@qq.com", "daealine": 5});
     var headers = {
