@@ -3,11 +3,99 @@
  * 该CSS负责处理在右侧栏下方的计算公共时间的区域的样式
  */
 
+/* 整体 */
+.greatDay{
+    font-size: 140%;
+}
 
 
+
+
+
+/* form */
 .greatDay #commonTime-button{
     font-size: 140%;
     font-weight: bold;
     color:white;
     background-color: skyblue;
+}
+
+.greatDay form{
+    padding-top:25px;
+    background-color: #f6f6f6;
+    height: 390px;
+}
+
+
+
+
+
+
+/* tiems zone 时间段 */
+.greatDay .times{
+    position: relative;
+    top:-50px;
+}
+
+.greatDay .times .time{
+    margin-top: -15px;
+}
+
+
+
+
+
+
+
+/* dates zone 日期范围 */
+.greatDay .beginDate label,
+.greatDay .endDate label{
+    position: relative;
+    top: 20px;
+    left:-5px;
+}
+
+.greatDay .dates div{
+    position: relative;
+    top: -15px;
+}
+
+.greatDay .beginDate{
+    margin-bottom: 0px;
+}
+
+.greatDay .endDate{
+    margin-top: -30px;
+}
+
+
+
+
+
+
+
+/* button Great Day 按钮 */
+.greatDay button{
+    font-size: 110%;
+    position: relative;
+    top:-40px;
+    left: 50%;
+    outline: none;
+}
+
+
+
+
+
+
+
+/* resultZone greatDay的结果区域 */
+.greatDay #resultZone{
+    padding-top:25px;
+    background-color: #f6f6f6;
+    height: 390px;
+}
+
+.greatDay #result{ /* test */
+    padding-top: 50px;
 }

@@ -33,7 +33,7 @@ class CalendarComponent{
 
 
   /*----- 我的群组有关的变量 -------*/
-  bool groupsFlag = false;//默认我的群组展开
+  bool groupsFlag = false;//默认我的群组不展开
   // bool optionsFlag = true;//默认我的群组中选项展开
   // bool addGroupFlag = true;//默认加入群组选项展开
   
@@ -65,6 +65,7 @@ class CalendarComponent{
 
   /*----- 计算公共时间有关的变量 -------*/
   bool commonTimeFlag = false;//默认这个区域不展开
+  bool commonTimeResultFlag = true;//true是不显示，false是显示！
   String selectGroup = '';
   String beginDate = "", endDate = "";
   String beginTime = "", endTime = "";
@@ -103,6 +104,10 @@ class CalendarComponent{
 
 
   /*---------------------------methods---------------------------*/
+  void sendEmail(){
+    
+  }
+
   /*--------------------------- 日历本体相关 -------------------------------*/
   //更新日历
   void calendarUpdate(){
@@ -528,7 +533,16 @@ class CalendarComponent{
 
   //求出公共时间
   void findGreatDay(){
+    //先表单检查
+    
+    this.commonTimeResultFlag = !this.commonTimeResultFlag;
+  }
 
+  //从结果界面返回表单界面
+  void returnGreatDayForm(){
+    //清理结果
+
+    this.commonTimeResultFlag = !this.commonTimeResultFlag;
   }
 
 
