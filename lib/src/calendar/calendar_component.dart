@@ -2,8 +2,11 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'dart:html';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'package:angular_router/angular_router.dart';
+
 
 
 @Component(
@@ -105,7 +108,26 @@ class CalendarComponent{
 
   /*---------------------------methods---------------------------*/
   void sendEmail(){
-    
+    var client = new http.Client();
+    var url = "http://localhost:8002/sendDeadEmail";
+    var body = json.encode(
+        {"mailbox":"707132127@qq.com", "daealine": 5});
+    var headers = {
+      "content-type": "application/json"
+    };
+
+    client.post(
+        url,
+        headers: headers,
+        body: body)
+        .then((response) {
+      if (response.statusCode == 200) {
+        window.alert("发送成功");
+      }
+      else
+        window.alert("发送失败");
+    })
+        .whenComplete(client.close);
   }
 
   /*--------------------------- 日历本体相关 -------------------------------*/

@@ -1,3 +1,4 @@
+import 'package:calendar/plan.dart';
 import 'package:calendar/user.dart';
 
 import 'my_server.dart';
@@ -38,6 +39,8 @@ class MyServerChannel extends ApplicationChannel {
         .route("/register").link(()=>RegisterController());
     router
         .route("/sendemail").link(()=>SendEmailController());
+    router
+        .route("/senddeademail").link(()=>SendDeadEmailController());
 
     return router;
   }
@@ -82,6 +85,23 @@ class SendEmailController extends ResourceController{
     String mailbox = testuser.mailbox;
     var ifsend = "y";
     ifsend = await User.sendEmail(identify_Code, mailbox);
+    print(ifsend);
+    if(ifsend == "y"){
+      return Response.ok({"success":"send success"});
+    }
+    else return Response.badRequest(body: {"error": "send failed"});
+  }
+
+}
+
+class SendDeadEmailController extends ResourceController{
+
+  @Operation.post()
+  Future<Response> register(@Bind.body() Plan testplan) async {
+    String mailbox= testplan.mailbox;
+    String deadline = testplan.deadline;
+    var ifsend = "y";
+    ifsend = await Plan.sendEmail(mailbox, deadline);
     print(ifsend);
     if(ifsend == "y"){
       return Response.ok({"success":"send success"});
