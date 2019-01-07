@@ -75,11 +75,11 @@
 
 
 /* button Great Day 按钮 */
-.greatDay button{
+.greatDay form button{
     font-size: 110%;
     position: relative;
     top:-40px;
-    left: 50%;
+    left: 30%;
     outline: none;
 }
 
