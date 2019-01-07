@@ -549,8 +549,14 @@ class CalendarComponent{
 
   } 
 
+  //监听群组选项的变化
   void changeGroup(String value){
     selectGroup = value;
+  }
+
+  //重置公共时间表单
+  void resetGreatDay(){
+    
   }
 
   //求出公共时间
@@ -729,4 +735,8 @@ class User{
     }
   }
 
+}
+
+class Result{
+  
 }
