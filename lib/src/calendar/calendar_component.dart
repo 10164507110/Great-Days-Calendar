@@ -12,6 +12,8 @@ import 'package:angular_router/angular_router.dart';
   templateUrl: 'calendar_component.html',
   directives: [
     materialInputDirectives,
+    MaterialFabComponent,
+    MaterialButtonComponent,
     MaterialRadioComponent,
     MaterialRadioGroupComponent,
     NgFor,
@@ -34,7 +36,8 @@ class CalendarComponent{
 
   /*----- 我的群组有关的变量 -------*/
   bool groupsFlag = false;//默认我的群组展开
-  // bool optionsFlag = true;//默认我的群组中选项展开
+  bool addGroupFlag = false;//默认添加群组选项隐藏
+  bool changeGroupStatus = false;//默认对群组改动选项隐藏
   // bool addGroupFlag = true;//默认加入群组选项展开
   
 
@@ -57,6 +60,8 @@ class CalendarComponent{
   String plantimeBegin = '';//具体的时间
   String plandateEnd = '';//日期信息(时间段终点)
   String plantimeEnd = '';//具体的时间
+
+  String groupName = '';//新添加的群组名称
 
   String myName = "stupig";//我的用户名
   List<Group> mygroups = [];//我的群组
@@ -292,7 +297,24 @@ class CalendarComponent{
     // mygroups.add(new Group("pigs"));
   }
 
+  //群组面板中点击+按钮展开群组面板
 
+  void makeChangesToGroups(){
+    this.changeGroupStatus=!this.changeGroupStatus;
+  }
+
+  void deleteGroupFromMyGroup(Group group){
+    mygroups.remove(group);
+  }
+
+  void dropDownAddGroupList(){
+      this.addGroupFlag = !this.addGroupFlag;
+  }
+
+  void addGroupList(){
+      if(this.groupName != "")mygroups.add(new Group(this.groupName));
+      this.groupName = "";
+  }
 //  //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
 //   void dropDownOptions(String option){
 //     switch(option){
@@ -694,3 +716,5 @@ class User{
   }
 
 }
+
+
