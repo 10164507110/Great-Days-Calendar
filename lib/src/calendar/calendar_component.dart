@@ -736,3 +736,7 @@ class User{
   }
 
 }
+
+class Result{
+  
+}
