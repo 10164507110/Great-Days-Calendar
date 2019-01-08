@@ -1,6 +1,9 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'dart:html';
+import 'package:angular_components/material_menu/material_fab_menu.dart';
+import 'package:angular_components/model/menu/menu.dart';
+import 'package:angular_components/model/ui/icon.dart';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,6 +20,7 @@ import 'package:angular_router/angular_router.dart';
     materialInputDirectives,
     MaterialFabComponent,
     MaterialButtonComponent,
+    MaterialFabMenuComponent,
     MaterialRadioComponent,
     MaterialRadioGroupComponent,
     NgFor,
@@ -38,6 +42,18 @@ class CalendarComponent{
 
 
   /*----- 我的群组有关的变量 -------*/
+  // final MenuItem menuItem = MenuItem('checkGroup',
+  //     icon: Icon('add'),
+  //     subMenu: MenuModel([
+  //       MenuItemGroup([
+  //         MenuItem('item1-1', tooltip: 'your tooltip'),
+  //         MenuItem('item1-2', tooltip: 'your second tooltip')
+  //       ], 'group1'),
+  //       MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
+  //     ]));
+
+  // `````````````````上面是menu的dart```````````````````
+  
   bool groupsFlag = false;//默认我的群组展开
   bool addGroupFlag = false;//默认添加群组选项隐藏
   bool changeGroupStatus = false;//默认对群组改动选项隐藏
@@ -763,3 +779,4 @@ class User{
 class Result{
   
 }
+
