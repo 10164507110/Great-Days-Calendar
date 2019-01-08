@@ -3,6 +3,7 @@ import 'dart:html';
 import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:calendar/src/calendar/calendar_component.dart';
 import 'package:calendar/src/route_paths.dart';
@@ -21,19 +22,33 @@ import 'package:calendar/src/routes.dart';
     NgIf,
     CalendarComponent,
     routerDirectives,
-    coreDirectives
+    coreDirectives,
+    DropdownMenuComponent,
+    MaterialIconComponent,
+    MaterialMenuComponent,
+    MaterialFabMenuComponent
   ],
   pipes: [commonPipes],
+  providers: [popupBindings]
 )
+
 
 class LoginComponent{
 
   String username = '';
   String password = '';
   Router _router;
-//  _router.;
-  bool ifRegister = false;
   LoginComponent(this._router);
+//  final MenuItem menuItem = MenuItem('your label',
+//      icon: Icon('add'),
+//      subMenu: MenuModel([
+//        MenuItemGroup([
+//          MenuItem('item1-1', tooltip: 'your tooltip'),
+//          MenuItem('item1-2', tooltip: 'your second tooltip')
+//        ], 'group1'),
+//        MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
+//      ]));
+
 
   Future<NavigationResult> gotoRegister() =>
       _router.navigate(RoutePaths.register.toUrl());
@@ -67,5 +82,4 @@ class LoginComponent{
         .whenComplete(client.close);
   }
 
-  
 }
