@@ -56,6 +56,19 @@ class User extends Serializable {
 
   }
 
+  static Future<int> selectId(String username)async {
+    var stuList;
+    int id;
+    stuList = await getAll();
+    print(username);
+    for(int i=0;i<stuList.length;i++){
+      if(stuList[i][1]==username)
+        id = stuList[i][0];
+    }
+      return id;
+  }
+
+
   static Future<String> sendEmail(String code, String mailbox) async {
 
     String stmpusername = "10164507121@stu.ecnu.edu.cn";

@@ -1,5 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:calendar/src/route_paths.dart';
 import 'dart:html';
 import 'package:angular_components/material_menu/material_fab_menu.dart';
 import 'package:angular_components/model/menu/menu.dart';
@@ -29,7 +30,7 @@ import 'package:angular_router/angular_router.dart';
   ],
 )
 
-class CalendarComponent{
+class CalendarComponent implements OnActivate{
   /*------------------- instance variables --------------------*/
   /*------------- 日历相关变量 ------------------*/
   List<int> days = new List<int>.filled(42, -1);
@@ -93,6 +94,10 @@ class CalendarComponent{
   String selectGroup = '';
   String beginDate = "", endDate = "";
   String beginTime = "", endTime = "";
+  /*公共时间的结果*/
+  static int limitDelta = 30;//结果的默认时段超过30分钟
+  int resultNum;
+  List<String> dates = [];//form beginDate to endDate;
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -101,11 +106,13 @@ class CalendarComponent{
       /* ------------------------------- */
 
 
-
-  //constructor
-  CalendarComponent(){
+  int userid;
+  @override
+  void onActivate(_, RouterState current) async {
+    final id = getId(current.parameters);
+    if (id != null)  userid = id;
     //创建伪数据 - 测试用
-    createTheFakeDatas();
+    createTheFakeDatas(userid);
     //填充伪数据给mygroups - 测试用
     fillMygroups();
     //填充伪数据给myplans - 测试用
@@ -118,6 +125,24 @@ class CalendarComponent{
     now_year = now.year;
     calendarUpdate();
   }
+
+
+//  //constructor
+//  CalendarComponent(){
+//    //创建伪数据 - 测试用
+//    createTheFakeDatas();
+//    //填充伪数据给mygroups - 测试用
+//    fillMygroups();
+//    //填充伪数据给myplans - 测试用
+//    fillMyplans();
+//
+//    //初始化将日历设置成当日
+//    DateTime now = new DateTime.now();
+//    now_day = now.day;
+//    now_month = now.month;
+//    now_year = now.year;
+//    calendarUpdate();
+//  }
 
 
 
@@ -150,6 +175,13 @@ class CalendarComponent{
     })
         .whenComplete(client.close);
   }
+
+
+
+
+
+
+
 
   /*--------------------------- 日历本体相关 -------------------------------*/
   //更新日历
@@ -589,27 +621,51 @@ class CalendarComponent{
 
   //监听群组选项的变化
   void changeGroup(String value){
-    selectGroup = value;
+    selectGroup = value;//selectGroup即是当前选中的群组
   }
 
   //重置公共时间表单
   void resetGreatDay(){
-    
+    commonTimeUpdate();
+    endDate = "";
   }
 
-  //求出公共时间
+  //公共时间表单提交
   void findGreatDay(){
     //先表单检查
-    
-    this.commonTimeResultFlag = !this.commonTimeResultFlag;
+    if(selectGroup!="" && beginDate!="" && endDate!=""
+        && beginTime!="" && endTime!=""){
+          calculateGreatDay();//负责计算出公共时间
+          this.commonTimeResultFlag = !this.commonTimeResultFlag;
+    }else{
+      //可以显示一个警告，表示表单未填完
+    }
+  }
+
+  //计算公共时间
+  void calculateGreatDay(){
+    //首先获取当前自己所在的群组
+    Group group = null; 
+    for(int i=0; i<mygroups.length; i++){
+      if(mygroups[i].groupname == selectGroup){
+        group = mygroups[i]; 
+        break;
+      }
+    }//end for
+
+    List<User> members = group.groupMembers;
+    resultNum = members.length;
+
+    //填充dates数组，从beginDate 到 endDate
+    dates = Datee.fillDates(beginDate, endDate);
+
   }
 
   //从结果界面返回表单界面
   void returnGreatDayForm(){
-    //清理结果
-
     this.commonTimeResultFlag = !this.commonTimeResultFlag;
   }
+
 
 
 
@@ -617,8 +673,9 @@ class CalendarComponent{
 
 
   //管理伪数据
-  createTheFakeDatas(){
-    //myid = stupig happig jumpig sleepig champig 
+  createTheFakeDatas(int userid){
+    //myid = stupig happig jumpig sleepig champig
+    print(userid);
     //创建了五名角色
     User stupig = new User("stupig");
     User happig = new User("happig");
@@ -712,9 +769,10 @@ class Plan{
   String plantimePoint, plandatePoint;
   String plantimeBegin, plantimeEnd;
   String plandateBegin, plandateEnd;
+  String username;
 
   //constructor
-  Plan(String planname, String plantype, String date1, String time1, [String date2, String time2, String]){
+  Plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
     this.planname = planname;
     this.plantype = plantype;
 
@@ -726,6 +784,39 @@ class Plan{
     }
   }
 
+  // //对于时间段，判断某个日期与这个时间段的关系
+  // -2(完全不在) -1 (左边界) 0 (中间) 1(右边界) 2(重叠，就是这天) -3(错误信息)
+  int relationDate(String date){
+    if(this.plantype != 'interval') return -3;
+
+    if(plandateBegin == plandateEnd){
+      if(plandateBegin == date) return 2;
+      else return -2;
+    }else{
+      if(plandateBegin == date) return -1;
+      else if(plandateEnd == date) return 1;
+      else if(Datee.dateCompare(date, plandateBegin) == 1
+        && Datee.dateCompare(date, plandateEnd) == -1) return 0;
+      else return -2;
+    }
+  }
+
+  //对于时间点，判断时间点是否在某个时间范围内 eg. 08:30 ~ 12:30
+  bool ifConflict(String begin, String end){
+    if(this.plantype != 'point') return false;
+    
+    if(Datee.timeCompare(this.plantimePoint, begin) >= 0
+      && Datee.timeCompare(this.plantimePoint, end) <=0 ){
+        return true;
+    }else{
+      return false;
+    }
+  }
+
+  //显示改时间点计划的冲突信息
+  //格式： XXX(人)-XXXX(事件)-XX:XX(时间点)
+  get conflictInfo => username + "-" + this.planname + "-" + this.plantimePoint;
+      
 }
 
 
@@ -746,12 +837,15 @@ class Group{
   }
 }
 
+
 /* --------------------- 用户的类 ----------------------- */
 class User{
   String username;
   //这里可能还有更多与用户相关的个人信息，例如性别等
 
   List<Plan> userPlans;//该用户的计划
+  List<Plan> userPointPlans;//该用户的时间点类计划
+  List<Plan> userIntervalPlans;//该用户的时间段类计划
   List<Group> userGroups;//该用户的群组
 
   //constructor
@@ -759,24 +853,119 @@ class User{
     this.username = username;
     this.userPlans = [];
     this.userGroups = [];
+    this.userPointPlans = [];
+    this.userIntervalPlans = [];
   }
 
+  //添加用户自己的计划
   void addPlan(Plan plan){
     if(plan != null && !this.userPlans.contains(plan)){
+      plan.username = this.username;
       this.userPlans.add(plan);
+      if(plan.plantype == 'point') this.userPointPlans.add(plan);
+      else if(plan.plantype == 'interval') this.userIntervalPlans.add(plan);
     }
   }
 
+  //添加用户自己的群组
   void addGroup(Group group){
     if(group != null && !this.userGroups.contains(group)){
       this.userGroups.add(group);
     }
   }
 
-}
+}   
 
-
+/* ------------------- 公共时间的结果 ----------------------*/
 class Result{
-  
+  String date;
+  String beginTime, endTime;//time
+  List<String> conflicts = [];
+  get deltaTime => Datee.deltaTime(beginTime, endTime);
+  get flag => (this.deltaTime >= CalendarComponent.limitDelta)?true:false;
+
+  Result(String begin, String end){
+    this.beginTime = begin;
+    this.endTime = end;
+  }
+
+  //传入一个时间点时间， 根据是否冲突来进行下一步计算
+  void dealConflict(Plan plan){
+
+  }
+
+
 }
 
+
+
+/* ------------- 辅助计算日期与时间用的类 为了防止命名冲突，取名Datee -----------*/
+class Datee{
+  /* ------------ 关于日期计算处理的一些静态方法 -----------------*/
+  //比较两个日期
+  static int dateCompare(String a, String b){
+    //2019-01-07
+    if(Datee.dateYear(a) > Datee.dateYear(b)) return 1;
+    else if(Datee.dateYear(a) < Datee.dateYear(b)) return -1;
+    else{
+      //同一年的情况，先比月
+      if(Datee.dateMonth(a) > Datee.dateMonth(b)) return 1;
+      else if(Datee.dateMonth(a) < Datee.dateMonth(b)) return -1;
+      else{
+        if(Datee.dateDay(a) == Datee.dateDay(b)) return 0;
+        else return (Datee.dateDay(a) > Datee.dateDay(b))?1:-1; 
+      }
+    }
+  }//end dateCompare()
+
+  //从2019-01-07中获取年月日
+  static int dateYear(String date){
+    return int.parse(date.substring(0,4));
+  }
+  static int dateMonth(String date){
+    return int.parse(date.substring(5,7));
+  }
+  static int dateDay(String date){
+    return int.parse(date.substring(8));
+  }
+
+  //比较两个时间08:30
+  static int timeCompare(String a, String b){
+    if(Datee.timeHour(a) > Datee.timeHour(b)) return 1;
+    else if(Datee.timeHour(a) < Datee.timeHour(b)) return -1;
+    else{
+      //如果小时一样
+      if(Datee.timeMinute(a) > Datee.timeMinute(b)) return 1;
+      else if(Datee.timeMinute(a) < Datee.timeMinute(b)) return -1;
+      else return 0;
+    }
+  }
+
+  //从08:30中获取小时与分钟
+  static int timeHour(String time){
+    return int.parse(time.substring(0,2));
+  }
+  static int timeMinute(String time){
+    return int.parse(time.substring(3));
+  }
+
+  //计算两个时间的差值 - 分钟
+  static int deltaTime(String begin, String end){
+    return (Datee.timeHour(end) * 60 + Datee.timeMinute(end))
+          - (Datee.timeHour(begin) * 60 + Datee.timeMinute(begin));
+  }
+
+  //from beginDate to endDate
+  static List<String> fillDates(String begin, String end){
+    List<String> dates = [];
+    dates.add("2019-01-17");
+    return dates;
+  }
+  
+<<<<<<< HEAD
+}
+
+=======
+
+}
+>>>>>>> e694d93fefb6a96314acbadd275fd543667d0792
