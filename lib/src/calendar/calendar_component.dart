@@ -78,7 +78,6 @@ class CalendarComponent{
   String beginDate = "", endDate = "";
   String beginTime = "", endTime = "";
   /*公共时间的结果*/
-  static int limitDelta = 30;//结果的默认时段超过30分钟
   int resultNum;
   List<String> dates = [];//form beginDate to endDate;
 
@@ -730,7 +729,6 @@ class Plan{
   String plantimePoint, plandatePoint;
   String plantimeBegin, plantimeEnd;
   String plandateBegin, plandateEnd;
-  String username;
 
   //constructor
   Plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
@@ -765,19 +763,10 @@ class Plan{
   //对于时间点，判断时间点是否在某个时间范围内 eg. 08:30 ~ 12:30
   bool ifConflict(String begin, String end){
     if(this.plantype != 'point') return false;
-    
-    if(Datee.timeCompare(this.plantimePoint, begin) >= 0
-      && Datee.timeCompare(this.plantimePoint, end) <=0 ){
-        return true;
-    }else{
-      return false;
-    }
+
+    return true;
   }
 
-  //显示改时间点计划的冲突信息
-  //格式： XXX(人)-XXXX(事件)-XX:XX(时间点)
-  get conflictInfo => username + "-" + this.planname + "-" + this.plantimePoint;
-      
 }
 
 
@@ -821,7 +810,6 @@ class User{
   //添加用户自己的计划
   void addPlan(Plan plan){
     if(plan != null && !this.userPlans.contains(plan)){
-      plan.username = this.username;
       this.userPlans.add(plan);
       if(plan.plantype == 'point') this.userPointPlans.add(plan);
       else if(plan.plantype == 'interval') this.userIntervalPlans.add(plan);
@@ -835,29 +823,7 @@ class User{
     }
   }
 
-}   
-
-/* ------------------- 公共时间的结果 ----------------------*/
-class Result{
-  String date;
-  String beginTime, endTime;//time
-  List<String> conflicts = [];
-  get deltaTime => Datee.deltaTime(beginTime, endTime);
-  get flag => (this.deltaTime >= CalendarComponent.limitDelta)?true:false;
-
-  Result(String begin, String end){
-    this.beginTime = begin;
-    this.endTime = end;
-  }
-
-  //传入一个时间点时间， 根据是否冲突来进行下一步计算
-  void dealConflict(Plan plan){
-
-  }
-
-
 }
-
 
 
 /* ------------- 辅助计算日期与时间用的类 为了防止命名冲突，取名Datee -----------*/
@@ -877,7 +843,7 @@ class Datee{
         else return (Datee.dateDay(a) > Datee.dateDay(b))?1:-1; 
       }
     }
-  }//end dateCompare()
+  }
 
   //从2019-01-07中获取年月日
   static int dateYear(String date){
@@ -890,24 +856,8 @@ class Datee{
     return int.parse(date.substring(8));
   }
 
-  //比较两个时间08:30
-  static int timeCompare(String a, String b){
-    if(Datee.timeHour(a) > Datee.timeHour(b)) return 1;
-    else if(Datee.timeHour(a) < Datee.timeHour(b)) return -1;
-    else{
-      //如果小时一样
-      if(Datee.timeMinute(a) > Datee.timeMinute(b)) return 1;
-      else if(Datee.timeMinute(a) < Datee.timeMinute(b)) return -1;
-      else return 0;
-    }
-  }
+  Datee(){
 
-  //从08:30中获取小时与分钟
-  static int timeHour(String time){
-    return int.parse(time.substring(0,2));
-  }
-  static int timeMinute(String time){
-    return int.parse(time.substring(3));
   }
 
   //计算两个时间的差值 - 分钟
