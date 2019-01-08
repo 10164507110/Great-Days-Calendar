@@ -28,6 +28,7 @@ import 'package:angular_router/angular_router.dart';
     NgIf,
     routerDirectives,
   ],
+    providers: [popupBindings]
 )
 
 class CalendarComponent implements OnActivate{
@@ -43,6 +44,7 @@ class CalendarComponent implements OnActivate{
 
 
   /*----- 我的群组有关的变量 -------*/
+<<<<<<< HEAD
   final MenuItem menuItem = MenuItem('checkGroup',
       icon: Icon('add'),
       subMenu: MenuModel([
@@ -52,6 +54,17 @@ class CalendarComponent implements OnActivate{
         ], 'group1'),
         MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
       ]));
+=======
+   final MenuItem menuItem = MenuItem('checkGroup',
+       icon: Icon('add'),
+       subMenu: MenuModel([
+         MenuItemGroup([
+           MenuItem('item1-1', tooltip: 'your tooltip'),
+           MenuItem('item1-2', tooltip: 'your second tooltip')
+         ], 'group1'),
+         MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
+       ]));
+>>>>>>> 7328e7e54df0e4412aa9e053f458fa71de73f89c
 
   // `````````````````上面是menu的dart```````````````````
   
@@ -143,13 +156,6 @@ class CalendarComponent implements OnActivate{
 //    now_year = now.year;
 //    calendarUpdate();
 //  }
-
-
-
-
-
-
-
 
 
   /*---------------------------methods---------------------------*/
@@ -961,6 +967,13 @@ class Datee{
     dates.add("2019-01-17");
     return dates;
   }
+<<<<<<< HEAD
   
 
 }
+=======
+
+
+}
+
+>>>>>>> 7328e7e54df0e4412aa9e053f458fa71de73f89c
