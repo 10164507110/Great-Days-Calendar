@@ -962,10 +962,5 @@ class Datee{
     return dates;
   }
   
-<<<<<<< HEAD
-}
-
-=======
 
 }
->>>>>>> e694d93fefb6a96314acbadd275fd543667d0792
