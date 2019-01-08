@@ -252,7 +252,12 @@
             <!-- 计算公共时间 结果区域 -->
             <div *ngIf="!commonTimeResultFlag" id="resultZone">
                 <div id="result">
-                    {{resultNum}}
+                    <!-- {{resultNum}} -->
+                    <ul>
+                        <li *ngFor="let date of dates">
+                            {{date}}
+                        </li>
+                    </ul>
                 </div>
                 <button type="button" class="btn btn-default" (click)="returnGreatDayForm()">Return</button>
             </div>

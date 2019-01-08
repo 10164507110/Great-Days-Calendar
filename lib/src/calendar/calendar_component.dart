@@ -80,6 +80,7 @@ class CalendarComponent{
   /*公共时间的结果*/
   static int limitDelta = 30;//结果的默认时段超过30分钟
   int resultNum;
+  List<String> dates = [];//form beginDate to endDate;
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -617,6 +618,10 @@ class CalendarComponent{
 
     List<User> members = group.groupMembers;
     resultNum = members.length;
+
+    //填充dates数组，从beginDate 到 endDate
+    // dates = Datee
+
   }
 
   //从结果界面返回表单界面
@@ -910,5 +915,7 @@ class Datee{
     return (Datee.timeHour(end) * 60 + Datee.timeMinute(end))
           - (Datee.timeHour(begin) * 60 + Datee.timeMinute(begin));
   }
+
+  
 
 }
