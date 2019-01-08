@@ -1,5 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:calendar/src/route_paths.dart';
 import 'dart:html';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,11 @@ import 'package:angular_router/angular_router.dart';
   ],
 )
 
-class CalendarComponent{
+class CalendarComponent implements OnActivate{
+
+
+
+
   /*------------------- instance variables --------------------*/
   /*------------- 日历相关变量 ------------------*/
   List<int> days = new List<int>.filled(42, -1);
@@ -86,12 +91,24 @@ class CalendarComponent{
 
       /* ------------------------------- */
 
+  int userid;
 
+  void setId(int id) {
+      userid = id;
+  }
 
-  //constructor
-  CalendarComponent(){
+  int getuserId() {
+    return userid;
+  }
+
+  @override
+  void onActivate(_, RouterState current) async {
+    final id = getId(current.parameters);
+    print('test');
+    print(id);
+    if (id != null) userid = id;
     //创建伪数据 - 测试用
-    createTheFakeDatas();
+    createTheFakeDatas(userid);
     //填充伪数据给mygroups - 测试用
     fillMygroups();
     //填充伪数据给myplans - 测试用
@@ -104,6 +121,25 @@ class CalendarComponent{
     now_year = now.year;
     calendarUpdate();
   }
+
+  //constructor
+//  CalendarComponent(){
+//
+//    int myuserid = getuserId();
+//    //创建伪数据 - 测试用
+//    createTheFakeDatas(myuserid);
+//    //填充伪数据给mygroups - 测试用
+//    fillMygroups();
+//    //填充伪数据给myplans - 测试用
+//    fillMyplans();
+//
+//    //初始化将日历设置成当日
+//    DateTime now = new DateTime.now();
+//    now_day = now.day;
+//    now_month = now.month;
+//    now_year = now.year;
+//    calendarUpdate();
+//  }
 
 
 
@@ -629,8 +665,12 @@ class CalendarComponent{
 
 
   //管理伪数据
-  createTheFakeDatas(){
-    //myid = stupig happig jumpig sleepig champig 
+  createTheFakeDatas(int id){
+    //myid = stupig happig jumpig sleepig champig
+
+
+    print(id);
+
     //创建了五名角色
     User stupig = new User("stupig");
     User happig = new User("happig");
@@ -784,17 +824,19 @@ class Group{
 
 
 /* --------------------- 用户的类 ----------------------- */
-class User{
+class User {
   String username;
+  int userid;
+
   //这里可能还有更多与用户相关的个人信息，例如性别等
 
-  List<Plan> userPlans;//该用户的计划
-  List<Plan> userPointPlans;//该用户的时间点类计划
-  List<Plan> userIntervalPlans;//该用户的时间段类计划
-  List<Group> userGroups;//该用户的群组
+  List<Plan> userPlans; //该用户的计划
+  List<Plan> userPointPlans; //该用户的时间点类计划
+  List<Plan> userIntervalPlans; //该用户的时间段类计划
+  List<Group> userGroups; //该用户的群组
 
   //constructor
-  User(String username){
+  User(String username) {
     this.username = username;
     this.userPlans = [];
     this.userGroups = [];
@@ -803,30 +845,22 @@ class User{
   }
 
   //添加用户自己的计划
-  void addPlan(Plan plan){
-    if(plan != null && !this.userPlans.contains(plan)){
+  void addPlan(Plan plan) {
+    if (plan != null && !this.userPlans.contains(plan)) {
       this.userPlans.add(plan);
-      if(plan.plantype == 'point') this.userPointPlans.add(plan);
-      else if(plan.plantype == 'interval') this.userIntervalPlans.add(plan);
+      if (plan.plantype == 'point')
+        this.userPointPlans.add(plan);
+      else if (plan.plantype == 'interval') this.userIntervalPlans.add(plan);
     }
   }
 
   //添加用户自己的群组
-  void addGroup(Group group){
-    if(group != null && !this.userGroups.contains(group)){
+  void addGroup(Group group) {
+    if (group != null && !this.userGroups.contains(group)) {
       this.userGroups.add(group);
     }
   }
 
-}   
-
-<<<<<<< HEAD
-/* ------------------- 公共时间的结果 ----------------------*/
-=======
-
->>>>>>> 39fc7cb73f42b08adc203d2d8fbce64028c60785
-class Result{
-  
 }
 
 

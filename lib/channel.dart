@@ -60,7 +60,8 @@ class LoginController extends ResourceController{
     var selectUserPassword = await User.selectPassword(username);
     print(selectUserPassword);
     if(selectUserPassword == testuser.password){
-      return Response.ok({"success":"register success"});
+      var selectUserId = await User.selectId(username);
+      return Response.ok(selectUserId);
     }else return Response.badRequest(body: {"error": "wrong username or password."});
   }
 }

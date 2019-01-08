@@ -23,10 +23,16 @@ class Routes {
     useAsDefault: true,
   );
 
+  static final calendar_test = RouteDefinition(
+    routePath: RoutePaths.calendar_test,
+    component: calendar_component.CalendarComponentNgFactory,
+  );
+
 
   static final all = <RouteDefinition>[
     login,
     register,
-    calendar
+    calendar,
+    calendar_test
   ];
 }

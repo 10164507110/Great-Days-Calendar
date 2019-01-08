@@ -63,8 +63,14 @@ class LoginComponent{
 
     print(username);
 
-    Future<NavigationResult> gotoCalendar() =>
-      _router.navigate(RoutePaths.calendar.toUrl());
+    String _calendarUrl(int id) =>
+        RoutePaths.calendar_test.toUrl(parameters: {idParam: '$id'});
+
+    Future<NavigationResult> gotoCalendar(int id) =>
+        _router.navigate(_calendarUrl(id));
+
+//    Future<NavigationResult> gotoCalendar() =>
+//      _router.navigate(RoutePaths.calendar.toUrl());
 
     client.post(
         url,
@@ -73,7 +79,7 @@ class LoginComponent{
         .then((response) {
           if(response.statusCode == 200) {
             print(RoutePaths.calendar.toUrl().toString());
-            gotoCalendar();
+            gotoCalendar(int.parse(response.body));
           }
           else
             window.alert("请输入正确的用户名和密码");
