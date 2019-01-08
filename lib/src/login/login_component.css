@@ -2,36 +2,32 @@
     background-color: rgba(255, 255, 255, 0.95);
     width: 420px;
     height: 300px;
+    border: 1px solid #000000;
     border-radius: 6px;
-    box-shadow:0 0 9px #c7ddef;
-    padding: 15px;
+    padding: 10px;
     margin-top: 15%;
     margin-left: auto;
     margin-right: auto;
     display: block;
-    text-align:center
 }
 
-/* Make #myButton green with yellow icon */
-.blue {
-    background: mediumslateblue;
-    color: white;
-    width: 80%;
-    margin-bottom: 10px;
+.login-header{
+    width: 100%;
+    height: 48px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dcdcdc;
 }
 
-.mybutton {
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.grey {
-    color: dimgray;
+.login-header img{
+    width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .login-input-box{
     margin-top: 12px;
-    width: 90%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
     display: inline-block;
@@ -102,5 +98,3 @@
 .logon-box a:active{
     color: #ee7204;
 }
-
-

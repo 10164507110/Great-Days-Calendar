@@ -3,8 +3,6 @@ import 'package:angular_components/angular_components.dart';
 import 'package:calendar/src/route_paths.dart';
 import 'dart:html';
 import 'package:angular_components/material_menu/material_fab_menu.dart';
-import 'package:angular_components/material_button/material_button.dart';
-import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'dart:math';
@@ -24,7 +22,6 @@ import 'package:angular_router/angular_router.dart';
     MaterialFabComponent,
     MaterialButtonComponent,
     MaterialFabMenuComponent,
-    MaterialIconComponent,
     MaterialRadioComponent,
     MaterialRadioGroupComponent,
     NgFor,
@@ -47,21 +44,21 @@ class CalendarComponent implements OnActivate{
 
 
   /*----- 我的群组有关的变量 -------*/
-  // final MenuItem menuItem = MenuItem('checkGroup',
-  //     icon: Icon('add'),
-  //     subMenu: MenuModel([
-  //       MenuItemGroup([
-  //         MenuItem('item1-1', tooltip: 'your tooltip'),
-  //         MenuItem('item1-2', tooltip: 'your second tooltip')
-  //       ], 'group1'),
-  //       MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
-  //     ]));
+  final MenuItem menuItem = MenuItem('checkGroup',
+      icon: Icon('add'),
+      subMenu: MenuModel([
+        MenuItemGroup([
+          MenuItem('item1-1', tooltip: 'your tooltip'),
+          MenuItem('item1-2', tooltip: 'your second tooltip')
+        ], 'group1'),
+        MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
+      ]));
+
   // `````````````````上面是menu的dart```````````````````
   
   bool groupsFlag = false;//默认我的群组展开
   bool addGroupFlag = false;//默认添加群组选项隐藏
-  final bool changeGroupStatus = true;//默认对群组改动选项总显示
-  bool showMemberStatus = false;//默认对群成员展示隐藏
+  bool changeGroupStatus = false;//默认对群组改动选项隐藏
   // bool addGroupFlag = true;//默认加入群组选项展开
   
 
@@ -102,6 +99,7 @@ class CalendarComponent implements OnActivate{
   static int limitDelta = 30;//结果的默认时段超过30分钟
   int resultNum;
   List<String> dates = [];//form beginDate to endDate;
+  List<Result> finalResult = [];//最终结果
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -371,12 +369,12 @@ class CalendarComponent implements OnActivate{
 
   //群组面板中点击+按钮展开群组面板
 
-  void deleteGroupFromMyGroup(Group group){
-    mygroups.remove(group);
+  void makeChangesToGroups(){
+    this.changeGroupStatus=!this.changeGroupStatus;
   }
 
-  void showMemberInGroup(Group group){
-    group.showMemberStatus=!group.showMemberStatus;
+  void deleteGroupFromMyGroup(Group group){
+    mygroups.remove(group);
   }
 
   void dropDownAddGroupList(){
@@ -387,6 +385,16 @@ class CalendarComponent implements OnActivate{
       if(this.groupName != "")mygroups.add(new Group(this.groupName));
       this.groupName = "";
   }
+//  //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
+//   void dropDownOptions(String option){
+//     switch(option){
+//       case 'groupOption':{        
+//         this.optionsFlag = !this.optionsFlag;
+//         if(!optionsFlag)groupsFlag = optionsFlag;
+//         break;
+//       }
+//     }  
+//   }
 
   //点击下拉菜单的开头按钮，收回/展开下拉二级菜单
   void dropDownList(String target){
@@ -622,6 +630,8 @@ class CalendarComponent implements OnActivate{
     //先表单检查
     if(selectGroup!="" && beginDate!="" && endDate!=""
         && beginTime!="" && endTime!=""){
+          finalResult = [];//清空最终结果
+          dates = [];//清空日期数组
           calculateGreatDay();//负责计算出公共时间
           this.commonTimeResultFlag = !this.commonTimeResultFlag;
     }else{
@@ -638,14 +648,81 @@ class CalendarComponent implements OnActivate{
         group = mygroups[i]; 
         break;
       }
-    }//end for
+    }//end for group即当前所在的群组
 
+    //members即为当前群组里的群员
     List<User> members = group.groupMembers;
-    resultNum = members.length;
+    // resultNum = members.length;
 
     //填充dates数组，从beginDate 到 endDate
     dates = Datee.fillDates(beginDate, endDate);
 
+    //开始扫描每一天
+    for(int i=0; i<dates.length; i++){
+      List<int> today = setTodayTime();
+      List<Result> result = [];
+      //today数组以分钟为单位，另外，0表示被占用(不可利用时间)
+      for(int j=0; j<members.length; j++){
+        //扫描每一个群员
+        for(int k=0; k<members[j].userIntervalPlans.length; k++){
+          Plan plan = members[j].userIntervalPlans[k];
+          switch(plan.relationDate(dates[i])){
+            case -2: //完全不在
+            case -3: //错误
+              break;//do nothing
+            case -1: //左边界
+              for(int t=Datee.timeToMinute(plan.plantimeBegin); t<=Datee.timeToMinute(endTime);t++) today[t]=0;
+              break;
+            case 0: //中间
+              for(int t=Datee.timeToMinute(beginTime); t<=Datee.timeToMinute(endTime);t++) today[t]=0;
+              break;
+            case 1: //右边界
+              for(int t=Datee.timeToMinute(beginTime); t<=Datee.timeToMinute(plan.plantimeEnd);t++) today[t]=0;
+              break;
+            case 2: //同
+              for(int t=Datee.timeToMinute(plan.plantimeBegin); t<=Datee.timeToMinute(plan.plantimeEnd);t++) today[t]=0;
+              break;
+          }//end switch
+        }//end for k(时间段计划)
+      }//end for j(群员)
+      /* --------- 扫描时间段完毕 ---------*/
+      //推入临时result数组
+      for(int t=0; t<today.length; t++){
+        if(today[t]==1){
+          int m;
+          for(m=t+1; m<today.length && today[m]==1; m++);//t -> m-1
+          Result r = new Result(dates[i], Datee.minuteToTime(t), Datee.minuteToTime(m-1));
+          if(r.flag) result.add(r);//符合时长的推入临时reuslt数组
+          t = m;
+        }
+      }//end for(t)
+
+      //接下来，扫描时间点
+      // for(int t=0; t<result.length; t++) finalResult.add(result[t]);
+      for(int j=0; j<members.length; j++){
+        for(int k=0; k<members[j].userPointPlans.length; k++){
+            Plan plan = members[j].userPointPlans[k];
+            for(int r=0; r<result.length; r++){
+              result[r].dealConflict(plan);
+            }//end for(r) 扫描临时result数组
+        }//end for(k) 扫描时间点计划
+      }//end for(j) 扫描群员
+
+      //把今日的解推入finalResult
+      for(int t=0; t<result.length; t++){
+        finalResult.add(result[t]);
+      }
+    }//end for i(每一天)
+
+  }//end calculateGreatDay
+
+  //根据beginTime与endTime修改today
+  List<int> setTodayTime(){
+     List<int> today = new List<int>.filled(1441, 0);//该天的1440分钟先标记为0
+     for(int i=Datee.timeToMinute(beginTime); i<=Datee.timeToMinute(endTime); i++){
+       today[i] = 1;
+     }
+     return today;
   }
 
   //从结果界面返回表单界面
@@ -811,7 +888,6 @@ class Plan{
 class Group{
   String groupname;
   List<User> groupMembers;//该群组的用户集合
-  bool showMemberStatus = false;//默认隐藏
   
   //constructor
   Group(String groupname){
@@ -866,20 +942,28 @@ class User{
 
 /* ------------------- 公共时间的结果 ----------------------*/
 class Result{
-  String date;
+  String nowDate;
   String beginTime, endTime;//time
   List<String> conflicts = [];
   get deltaTime => Datee.deltaTime(beginTime, endTime);
   get flag => (this.deltaTime >= CalendarComponent.limitDelta)?true:false;
+  get info => nowDate + ":" + beginTime + " ~ " + endTime + " " + 
+      Datee.deltaTime(beginTime, endTime).toString() + "min";
 
-  Result(String begin, String end){
+  Result(String nowDate, String begin, String end){
+    this.nowDate = nowDate;
     this.beginTime = begin;
     this.endTime = end;
   }
 
   //传入一个时间点时间， 根据是否冲突来进行下一步计算
   void dealConflict(Plan plan){
-
+    String time = plan.plantimePoint;
+    if(Datee.timeCompare(time, beginTime) >= 0 && 
+      Datee.timeCompare(time, endTime) <= 0){
+        //发生冲突
+        conflicts.add(plan.conflictInfo);
+    }
   }
 
 
@@ -973,6 +1057,18 @@ class Datee{
   }
   static int timeMinute(String time){
     return int.parse(time.substring(3));
+  }
+
+  //将时间转为纯分钟
+  static int timeToMinute(String time){
+    return Datee.timeHour(time) * 60 + Datee.timeMinute(time);
+  }
+
+  //分钟转为08:30格式的时间
+  static String minuteToTime(int min){
+    int h = min~/60; int m = min%60;
+    return (h~/10).toString() + (h%10).toString() + ":" 
+        + (m~/10).toString() + (m%10).toString();
   }
 
   //计算两个时间的差值 - 分钟

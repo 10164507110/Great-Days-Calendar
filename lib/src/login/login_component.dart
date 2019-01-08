@@ -23,9 +23,7 @@ import 'package:calendar/src/routes.dart';
     CalendarComponent,
     routerDirectives,
     coreDirectives,
-    MaterialFabMenuComponent,
-    MaterialButtonComponent,
-    MaterialIconComponent,
+    MaterialFabMenuComponent
   ],
   pipes: [commonPipes],
   providers: [popupBindings]
@@ -38,6 +36,17 @@ class LoginComponent{
   String password = '';
   Router _router;
   LoginComponent(this._router);
+
+//  final MenuItem menuItem = MenuItem('your label',
+//      icon: Icon('add'),
+//      subMenu: MenuModel([
+//        MenuItemGroup([
+//          MenuItem('item1-1', tooltip: 'your tooltip'),
+//          MenuItem('item1-2', tooltip: 'your second tooltip')
+//        ], 'group1'),
+//        MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
+//      ]));
+
 
   Future<NavigationResult> gotoRegister() =>
       _router.navigate(RoutePaths.register.toUrl());
