@@ -1,31 +1,23 @@
 <div id="content">
-    <!--<material-fab-menu [menuItem]="menuItem">-->
-    <!--</material-fab-menu>-->
     <form>
         <div class="login-input-box">
-            <p>用户名</p>
             <material-input label="Your Username"
                             class="login-input-box"
                             [(ngModel)]="username">
             </material-input>
         </div>
         <div class="login-input-box">
-            <p>密码</p>
             <material-input label="Your Password"
                             class="login-input-box"
                             type="password"
                             [(ngModel)]="password">
             </material-input>
         </div>
-        <div>
-            <a (click)="login()" class="col-1-4">
-            <h4>登录</h4>
-            </a>
+        <div class="mybutton">
+            <material-button raised class="blue" (click)="login()">登录</material-button>
         </div>
-        <div>
-            <a (click)="gotoRegister()" class="col-1-4">
-                <h4>去注册</h4>
-            </a>
+        <div style="margin-top: -5px">
+            <material-button flat class="grey" (click)="gotoRegister()">去注册</material-button>
         </div>
     </form>
 </div>
