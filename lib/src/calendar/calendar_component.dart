@@ -80,6 +80,7 @@ class CalendarComponent implements OnActivate{
   String beginTime = "", endTime = "";
   /*公共时间的结果*/
   int resultNum;
+  List<String> dates = [];//form beginDate to endDate;
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -637,6 +638,10 @@ class CalendarComponent implements OnActivate{
 
     List<User> members = group.groupMembers;
     resultNum = members.length;
+
+    //填充dates数组，从beginDate 到 endDate
+    // dates = Datee
+
   }
 
   //从结果界面返回表单界面
@@ -876,4 +881,13 @@ class Datee{
   Datee(){
 
   }
+
+  //计算两个时间的差值 - 分钟
+  static int deltaTime(String begin, String end){
+    return (Datee.timeHour(end) * 60 + Datee.timeMinute(end))
+          - (Datee.timeHour(begin) * 60 + Datee.timeMinute(begin));
+  }
+
+  
+
 }
