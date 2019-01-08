@@ -15,6 +15,8 @@ import 'package:angular_router/angular_router.dart';
   templateUrl: 'calendar_component.html',
   directives: [
     materialInputDirectives,
+    MaterialFabComponent,
+    MaterialButtonComponent,
     MaterialRadioComponent,
     MaterialRadioGroupComponent,
     NgFor,
@@ -36,8 +38,9 @@ class CalendarComponent{
 
 
   /*----- 我的群组有关的变量 -------*/
-  bool groupsFlag = false;//默认我的群组不展开
-  // bool optionsFlag = true;//默认我的群组中选项展开
+  bool groupsFlag = false;//默认我的群组展开
+  bool addGroupFlag = false;//默认添加群组选项隐藏
+  bool changeGroupStatus = false;//默认对群组改动选项隐藏
   // bool addGroupFlag = true;//默认加入群组选项展开
   
 
@@ -61,6 +64,8 @@ class CalendarComponent{
   String plandateEnd = '';//日期信息(时间段终点)
   String plantimeEnd = '';//具体的时间
 
+  String groupName = '';//新添加的群组名称
+
   String myName = "stupig";//我的用户名
   List<Group> mygroups = [];//我的群组
   List<Plan> myplans = [];//我的计划
@@ -72,6 +77,8 @@ class CalendarComponent{
   String selectGroup = '';
   String beginDate = "", endDate = "";
   String beginTime = "", endTime = "";
+  /*公共时间的结果*/
+  int resultNum;
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -129,6 +136,13 @@ class CalendarComponent{
     })
         .whenComplete(client.close);
   }
+
+
+
+
+
+
+
 
   /*--------------------------- 日历本体相关 -------------------------------*/
   //更新日历
@@ -319,7 +333,24 @@ class CalendarComponent{
     // mygroups.add(new Group("pigs"));
   }
 
+  //群组面板中点击+按钮展开群组面板
 
+  void makeChangesToGroups(){
+    this.changeGroupStatus=!this.changeGroupStatus;
+  }
+
+  void deleteGroupFromMyGroup(Group group){
+    mygroups.remove(group);
+  }
+
+  void dropDownAddGroupList(){
+      this.addGroupFlag = !this.addGroupFlag;
+  }
+
+  void addGroupList(){
+      if(this.groupName != "")mygroups.add(new Group(this.groupName));
+      this.groupName = "";
+  }
 //  //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
 //   void dropDownOptions(String option){
 //     switch(option){
@@ -551,25 +582,44 @@ class CalendarComponent{
 
   //监听群组选项的变化
   void changeGroup(String value){
-    selectGroup = value;
+    selectGroup = value;//selectGroup即是当前选中的群组
   }
 
   //重置公共时间表单
   void resetGreatDay(){
-    
+    commonTimeUpdate();
+    endDate = "";
   }
 
-  //求出公共时间
+  //公共时间表单提交
   void findGreatDay(){
     //先表单检查
-    
-    this.commonTimeResultFlag = !this.commonTimeResultFlag;
+    if(selectGroup!="" && beginDate!="" && endDate!=""
+        && beginTime!="" && endTime!=""){
+          calculateGreatDay();//负责计算出公共时间
+          this.commonTimeResultFlag = !this.commonTimeResultFlag;
+    }else{
+      //可以显示一个警告，表示表单未填完
+    }
+  }
+
+  //计算公共时间
+  void calculateGreatDay(){
+    //首先获取当前自己所在的群组
+    Group group = null; 
+    for(int i=0; i<mygroups.length; i++){
+      if(mygroups[i].groupname == selectGroup){
+        group = mygroups[i]; 
+        break;
+      }
+    }//end for
+
+    List<User> members = group.groupMembers;
+    resultNum = members.length;
   }
 
   //从结果界面返回表单界面
   void returnGreatDayForm(){
-    //清理结果
-
     this.commonTimeResultFlag = !this.commonTimeResultFlag;
   }
 
@@ -676,7 +726,7 @@ class Plan{
   String plandateBegin, plandateEnd;
 
   //constructor
-  Plan(String planname, String plantype, String date1, String time1, [String date2, String time2, String]){
+  Plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
     this.planname = planname;
     this.plantype = plantype;
 
@@ -686,6 +736,30 @@ class Plan{
       this.plandateBegin = date1; this.plantimeBegin = time1;
       this.plandateEnd = date2; this.plantimeEnd = time2;
     }
+  }
+
+  // //对于时间段，判断某个日期与这个时间段的关系
+  // -2(完全不在) -1 (左边界) 0 (中间) 1(右边界) 2(重叠，就是这天) -3(错误信息)
+  int relationDate(String date){
+    if(this.plantype != 'interval') return -3;
+
+    if(plandateBegin == plandateEnd){
+      if(plandateBegin == date) return 2;
+      else return -2;
+    }else{
+      if(plandateBegin == date) return -1;
+      else if(plandateEnd == date) return 1;
+      else if(Datee.dateCompare(date, plandateBegin) == 1
+        && Datee.dateCompare(date, plandateEnd) == -1) return 0;
+      else return -2;
+    }
+  }
+
+  //对于时间点，判断时间点是否在某个时间范围内 eg. 08:30 ~ 12:30
+  bool ifConflict(String begin, String end){
+    if(this.plantype != 'point') return false;
+
+    return true;
   }
 
 }
@@ -708,12 +782,15 @@ class Group{
   }
 }
 
+
 /* --------------------- 用户的类 ----------------------- */
 class User{
   String username;
   //这里可能还有更多与用户相关的个人信息，例如性别等
 
   List<Plan> userPlans;//该用户的计划
+  List<Plan> userPointPlans;//该用户的时间点类计划
+  List<Plan> userIntervalPlans;//该用户的时间段类计划
   List<Group> userGroups;//该用户的群组
 
   //constructor
@@ -721,22 +798,70 @@ class User{
     this.username = username;
     this.userPlans = [];
     this.userGroups = [];
+    this.userPointPlans = [];
+    this.userIntervalPlans = [];
   }
 
+  //添加用户自己的计划
   void addPlan(Plan plan){
     if(plan != null && !this.userPlans.contains(plan)){
       this.userPlans.add(plan);
+      if(plan.plantype == 'point') this.userPointPlans.add(plan);
+      else if(plan.plantype == 'interval') this.userIntervalPlans.add(plan);
     }
   }
 
+  //添加用户自己的群组
   void addGroup(Group group){
     if(group != null && !this.userGroups.contains(group)){
       this.userGroups.add(group);
     }
   }
 
-}
+}   
 
+<<<<<<< HEAD
+/* ------------------- 公共时间的结果 ----------------------*/
+=======
+
+>>>>>>> 39fc7cb73f42b08adc203d2d8fbce64028c60785
 class Result{
   
+}
+
+
+
+/* ------------- 辅助计算日期与时间用的类 为了防止命名冲突，取名Datee -----------*/
+class Datee{
+  /* ------------ 关于日期计算处理的一些静态方法 -----------------*/
+  //比较两个日期
+  static int dateCompare(String a, String b){
+    //2019-01-07
+    if(Datee.dateYear(a) > Datee.dateYear(b)) return 1;
+    else if(Datee.dateYear(a) < Datee.dateYear(b)) return -1;
+    else{
+      //同一年的情况，先比月
+      if(Datee.dateMonth(a) > Datee.dateMonth(b)) return 1;
+      else if(Datee.dateMonth(a) < Datee.dateMonth(b)) return -1;
+      else{
+        if(Datee.dateDay(a) == Datee.dateDay(b)) return 0;
+        else return (Datee.dateDay(a) > Datee.dateDay(b))?1:-1; 
+      }
+    }
+  }
+
+  //从2019-01-07中获取年月日
+  static int dateYear(String date){
+    return int.parse(date.substring(0,4));
+  }
+  static int dateMonth(String date){
+    return int.parse(date.substring(5,7));
+  }
+  static int dateDay(String date){
+    return int.parse(date.substring(8));
+  }
+
+  Datee(){
+
+  }
 }
