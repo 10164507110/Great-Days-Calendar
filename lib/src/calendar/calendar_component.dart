@@ -1,5 +1,6 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:calendar/src/route_paths.dart';
 import 'dart:html';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,7 @@ import 'package:angular_router/angular_router.dart';
   ],
 )
 
-class CalendarComponent{
+class CalendarComponent implements OnActivate{
   /*------------------- instance variables --------------------*/
   /*------------- 日历相关变量 ------------------*/
   List<int> days = new List<int>.filled(42, -1);
@@ -89,11 +90,13 @@ class CalendarComponent{
       /* ------------------------------- */
 
 
-
-  //constructor
-  CalendarComponent(){
+  int userid;
+  @override
+  void onActivate(_, RouterState current) async {
+    final id = getId(current.parameters);
+    if (id != null)  userid = id;
     //创建伪数据 - 测试用
-    createTheFakeDatas();
+    createTheFakeDatas(userid);
     //填充伪数据给mygroups - 测试用
     fillMygroups();
     //填充伪数据给myplans - 测试用
@@ -106,6 +109,24 @@ class CalendarComponent{
     now_year = now.year;
     calendarUpdate();
   }
+
+
+//  //constructor
+//  CalendarComponent(){
+//    //创建伪数据 - 测试用
+//    createTheFakeDatas();
+//    //填充伪数据给mygroups - 测试用
+//    fillMygroups();
+//    //填充伪数据给myplans - 测试用
+//    fillMyplans();
+//
+//    //初始化将日历设置成当日
+//    DateTime now = new DateTime.now();
+//    now_day = now.day;
+//    now_month = now.month;
+//    now_year = now.year;
+//    calendarUpdate();
+//  }
 
 
 
@@ -636,8 +657,9 @@ class CalendarComponent{
 
 
   //管理伪数据
-  createTheFakeDatas(){
-    //myid = stupig happig jumpig sleepig champig 
+  createTheFakeDatas(int userid){
+    //myid = stupig happig jumpig sleepig champig
+    print(userid);
     //创建了五名角色
     User stupig = new User("stupig");
     User happig = new User("happig");
