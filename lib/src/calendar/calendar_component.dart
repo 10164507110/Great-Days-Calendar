@@ -885,6 +885,8 @@ class Result{
 
 /* ------------- 辅助计算日期与时间用的类 为了防止命名冲突，取名Datee -----------*/
 class Datee{
+  static List<int> months = [0,31,28,31,30,31,30,31,31,30,31,30,31];
+
   /* ------------ 关于日期计算处理的一些静态方法 -----------------*/
   //比较两个日期
   static int dateCompare(String a, String b){
@@ -913,6 +915,42 @@ class Datee{
     return int.parse(date.substring(8));
   }
 
+  //判断是不是闰年
+  static bool leapDate(String date){
+    int year = Datee.dateYear(date);
+    if(year%4==0 && year%100!=0 || year%400==0) return true;
+    else return false;
+  }
+
+  //from beginDate to endDate
+  static List<String> fillDates(String begin, String end){
+    List<String> dates = [];
+    dates.add(begin);
+    String date = begin;
+    while(date != end){
+      date = Datee.nextDate(date);
+      dates.add(date);
+    }
+    return dates;
+  }
+
+  //获取下一天的字符串表示
+  static String nextDate(String date){
+    int year = Datee.dateYear(date);
+    int month = Datee.dateMonth(date);
+    int day = Datee.dateDay(date);
+    //2019-01-05
+    if(Datee.leapDate(date)) Datee.months[2] = 29;
+    day++;
+    if(day > Datee.months[month]) {day = 1; month++;}
+    if(month>12) {year++; month = 1;}
+    Datee.months[2] = 28;
+    return year.toString() + "-" + (month~/10).toString() + (month%10).toString()
+          + "-" + (day~/10).toString() + (day%10).toString();
+  }
+
+  /* ---------------- 时间有关 --------------------------*/
+
   //比较两个时间08:30
   static int timeCompare(String a, String b){
     if(Datee.timeHour(a) > Datee.timeHour(b)) return 1;
@@ -937,13 +975,6 @@ class Datee{
   static int deltaTime(String begin, String end){
     return (Datee.timeHour(end) * 60 + Datee.timeMinute(end))
           - (Datee.timeHour(begin) * 60 + Datee.timeMinute(begin));
-  }
-
-  //from beginDate to endDate
-  static List<String> fillDates(String begin, String end){
-    List<String> dates = [];
-    dates.add("2019-01-17");
-    return dates;
   }
   
 
