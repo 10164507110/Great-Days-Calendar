@@ -24,7 +24,8 @@ import 'package:calendar/smtp_server/ecnustumail.dart';
     NgIf,
     CalendarComponent,
     routerDirectives,
-    coreDirectives
+    coreDirectives,
+    MaterialButtonComponent
   ],
   pipes: [commonPipes],
 )

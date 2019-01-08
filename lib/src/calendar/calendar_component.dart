@@ -3,6 +3,8 @@ import 'package:angular_components/angular_components.dart';
 import 'package:calendar/src/route_paths.dart';
 import 'dart:html';
 import 'package:angular_components/material_menu/material_fab_menu.dart';
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'dart:math';
@@ -22,6 +24,7 @@ import 'package:angular_router/angular_router.dart';
     MaterialFabComponent,
     MaterialButtonComponent,
     MaterialFabMenuComponent,
+    MaterialIconComponent,
     MaterialRadioComponent,
     MaterialRadioGroupComponent,
     NgFor,
@@ -44,21 +47,21 @@ class CalendarComponent implements OnActivate{
 
 
   /*----- 我的群组有关的变量 -------*/
-  final MenuItem menuItem = MenuItem('checkGroup',
-      icon: Icon('add'),
-      subMenu: MenuModel([
-        MenuItemGroup([
-          MenuItem('item1-1', tooltip: 'your tooltip'),
-          MenuItem('item1-2', tooltip: 'your second tooltip')
-        ], 'group1'),
-        MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
-      ]));
-
+  // final MenuItem menuItem = MenuItem('checkGroup',
+  //     icon: Icon('add'),
+  //     subMenu: MenuModel([
+  //       MenuItemGroup([
+  //         MenuItem('item1-1', tooltip: 'your tooltip'),
+  //         MenuItem('item1-2', tooltip: 'your second tooltip')
+  //       ], 'group1'),
+  //       MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
+  //     ]));
   // `````````````````上面是menu的dart```````````````````
   
   bool groupsFlag = false;//默认我的群组展开
   bool addGroupFlag = false;//默认添加群组选项隐藏
-  bool changeGroupStatus = false;//默认对群组改动选项隐藏
+  final bool changeGroupStatus = true;//默认对群组改动选项总显示
+  bool showMemberStatus = false;//默认对群成员展示隐藏
   // bool addGroupFlag = true;//默认加入群组选项展开
   
 
@@ -99,7 +102,7 @@ class CalendarComponent implements OnActivate{
   static int limitDelta = 30;//结果的默认时段超过30分钟
   int resultNum;
   List<String> dates = [];//form beginDate to endDate;
-  List<Result> finalResult = [];//最终结果
+  List<Result> finalResult = [];
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -369,12 +372,12 @@ class CalendarComponent implements OnActivate{
 
   //群组面板中点击+按钮展开群组面板
 
-  void makeChangesToGroups(){
-    this.changeGroupStatus=!this.changeGroupStatus;
-  }
-
   void deleteGroupFromMyGroup(Group group){
     mygroups.remove(group);
+  }
+
+  void showMemberInGroup(Group group){
+    group.showMemberStatus=!group.showMemberStatus;
   }
 
   void dropDownAddGroupList(){
@@ -385,16 +388,6 @@ class CalendarComponent implements OnActivate{
       if(this.groupName != "")mygroups.add(new Group(this.groupName));
       this.groupName = "";
   }
-//  //点击下拉菜单的开头按钮，收回/展开下拉一级菜单
-//   void dropDownOptions(String option){
-//     switch(option){
-//       case 'groupOption':{        
-//         this.optionsFlag = !this.optionsFlag;
-//         if(!optionsFlag)groupsFlag = optionsFlag;
-//         break;
-//       }
-//     }  
-//   }
 
   //点击下拉菜单的开头按钮，收回/展开下拉二级菜单
   void dropDownList(String target){
@@ -630,8 +623,6 @@ class CalendarComponent implements OnActivate{
     //先表单检查
     if(selectGroup!="" && beginDate!="" && endDate!=""
         && beginTime!="" && endTime!=""){
-          finalResult = [];//清空最终结果
-          dates = [];//清空日期数组
           calculateGreatDay();//负责计算出公共时间
           this.commonTimeResultFlag = !this.commonTimeResultFlag;
     }else{
@@ -888,6 +879,7 @@ class Plan{
 class Group{
   String groupname;
   List<User> groupMembers;//该群组的用户集合
+  bool showMemberStatus = false;//默认隐藏
   
   //constructor
   Group(String groupname){

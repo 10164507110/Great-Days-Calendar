@@ -1,14 +1,22 @@
 #content{
     background-color: rgba(255, 255, 255, 0.95);
     width: 420px;
-    height: 450px;
-    border: 1px solid #000000;
+    height: 500px;
+    box-shadow:0 0 9px #c7ddef;
     border-radius: 6px;
     padding: 10px;
-    margin-top: 15%;
+    margin-top: 7%;
     margin-left: auto;
     margin-right: auto;
     display: block;
+    text-align: center;
+}
+
+form material-input{
+    position: relative;
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 5px;
 }
 
 .login-header{
@@ -31,6 +39,18 @@
     margin-left: auto;
     margin-right: auto;
     display: inline-block;
+}
+
+.mybutton {
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.blue {
+    background: mediumslateblue;
+    color: white;
+    width: 80%;
+    margin-bottom: 10px;
 }
 
 .login-input-box input{

@@ -69,15 +69,35 @@
     <div class="col-lg-3" id="right-list">
         
         <div class="myGroups-list">
+                <!-- <section>
+                        <h2>Material FAB Menu</h2>
+                        <material-fab-menu [menuItem]="menuItem">
+                        </material-fab-menu>
+                </section> -->
+                <!-- `````````````````上面是menu的html（后来觉得不好用就不要了）```````````````````-->
             <div id="myGroups">
                 <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
-                    <ul *ngIf="groupsFlag">                 
-                        <li *ngFor = "let group of mygroups; let i = index" class="myGroup" (click)="makeChangesToGroups();">
+                    <ul *ngIf="groupsFlag" >                 
+                        <li *ngFor = "let group of mygroups; let i = index" class="myGroup">
                             -&nbsp;&nbsp;{{group.groupname}} 
-                            <button *ngIf="changeGroupStatus" value= "let group of mygroups; let i = index" class="btn btn-group" (click)="deleteGroupFromMyGroup(group)">删除</button>                          
+                            
+                            <material-button icon (click)="showMemberInGroup(group)" >
+                                <material-icon *ngIf="changeGroupStatus" value= "let group of mygroups; let i = index" 
+                                        class="btn btn-group groupOption" icon="face" baseline></material-icon>
+                            </material-button>  
+
+                            <material-button icon (click)="deleteGroupFromMyGroup(group)">
+                                <material-icon *ngIf="changeGroupStatus" value= "let group of mygroups; let i = index" 
+                                    class="btn btn-group groupOption" icon="delete" baseline></material-icon>
+                            </material-button> 
+                            <div *ngIf="group.showMemberStatus" class="member">
+                                <div *ngFor = "let member of group.groupMembers; let j = index">
+                                    -&nbsp;&nbsp;{{member.username}} 
+                                </div>                                
+                            </div>
                         </li>               
                     </ul>
-                    <button *ngIf="groupsFlag" class="btn btn-info" (click)="dropDownAddGroupList()">+</button>
+                    <button *ngIf="groupsFlag" class="btn btn-info" (click)="dropDownAddGroupList()">新建群组</button>
                     <!-- 添加群组表单 -->
                     <div>
                         <div *ngIf="addGroupFlag" class="form-group">
@@ -88,7 +108,7 @@
                                 </label>
                             </div>
                             <div>
-                                <button class="btn btn-info" (click)="addGroupList()">add</button>
+                                <button class="btn btn-info" (click)="addGroupList()">添加至我的群组</button>
                             </div>
                         </div>
                     </div>

@@ -41,21 +41,20 @@
 
 
 ## 关于计算公共时间
-- 先根据选中的群组抽取出当前群组的成员一个members数组 √
-- 从beginDate 开始到endDate 扫描每一天 √
-- 该天有1440 这是一个分钟数组，一开始每一分钟都是0(未被占用时间) √
-- for mem in members{} 扫描每一个成员 √
-    for plan in plans{} 扫描该mem的plans数组 √
-        if plantype is interval//先处理时间段 √
-            if nowdate during plandate// 挖去占用时间 标记为0 √
-
-- 此时有该天剩余时间段(数组中连续标1的段落)，把这些段落整合成Result(nowdate, beginTime, endTime) √
-- 此时需要根据是否满足limitDelta的要求，来将Result推入临时的Result数组(今日的) √
-- for mem in members{} 重新扫描 √
-    for plan in plans{} √
-        if plantype is point √
-            for result in 临时的Result数组 √
-                if pointTime between thisResult's bound √
-                    this.Result. 在这个Result记录下(who when what) √
+- 先根据选中的群组抽取出当前群组的成员一个members数组
+- 从beginDate 开始到endDate 扫描每一天
+- 该天有1440 这是一个分钟数组，一开始每一分钟都是0(未被占用时间)
+- for mem in members{} 扫描每一个成员
+    for plan in plans{} 扫描该mem的plans数组
+        if plantype is interval//先处理时间段
+            if nowdate during plandate// 挖去占用时间 标记为1
+- 此时有该天剩余时间段(数组中连续标0的段落)，把这些段落整合成Result(nowdate, beginTime, endTime)
+- 此时需要根据是否满足limitDelta的要求，来将Result推入临时的Result数组(今日的)
+- for mem in members{} 重新扫描
+    for plan in plans{} 
+        if plantype is point
+            for result in 临时的Result数组
+                if pointTime between thisResult's bound
+                    this.Result. 在这个Result记录下(who when what)
                     
 - 把今天的临时Result的值推入最终的解里

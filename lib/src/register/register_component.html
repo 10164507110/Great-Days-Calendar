@@ -1,40 +1,31 @@
 <div id="content">
+    <h4 style="text-align: center; margin-bottom: 10px; margin-top: 10px">新用户注册</h4>
     <form>
-        <div class="login-input-box">
-            <p>用户名</p>
-            <material-input label="Your Username"
-                            class="login-input-box"
+            <material-input label="用户名"
                             [(ngModel)]="username">
             </material-input>
-        </div>
-        <div class="login-input-box">
-            <p>密码</p>
-            <material-input label="Your Password"
-                            class="login-input-box"
+            <material-input label="密码"
                             type="password"
                             [(ngModel)]="password">
             </material-input>
-        </div>
-        <div class="login-input-box">
-            <p>邮箱</p>
-            <material-input label="Your Mailbox"
-                            class="login-input-box"
-                            type="mailbox"
+            <material-input label="邮箱"
                             [(ngModel)]="mailbox">
             </material-input>
-            <a (click)="sendEmail()" class="col-1-4">
-                <p>发送验证码</p>
-            </a>
-            <material-input *ngIf="identify_code.isNotEmpty"
-                            label="Your identity code"
-                            class="login-input-box"
+
+        <div style="text-align: left;margin-left: 10px">
+            <material-button flat class="code" (click)="sendEmail()">发送验证码</material-button>
+        </div>
+
+        <div style="margin-top: -60px; margin-left: 100px; width: 73%">
+            <material-input label="验证码"
                             [(ngModel)]="code">
             </material-input>
         </div>
-        <div>
-            <a (click)="register()" class="col-1-4">
-            <h4>注册</h4>
-            </a>
+        <!--<div>-->
+            <!--<a (click)="register()" class="col-1-4">注册</a>-->
+        <!--</div>-->
+        <div class="mybutton">
+            <material-button raised class="blue" (click)="register()">注册</material-button>
         </div>
     </form>
 </div>
