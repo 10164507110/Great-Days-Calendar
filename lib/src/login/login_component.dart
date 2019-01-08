@@ -23,9 +23,6 @@ import 'package:calendar/src/routes.dart';
     CalendarComponent,
     routerDirectives,
     coreDirectives,
-    DropdownMenuComponent,
-    MaterialIconComponent,
-    MaterialMenuComponent,
     MaterialFabMenuComponent
   ],
   pipes: [commonPipes],
@@ -39,6 +36,7 @@ class LoginComponent{
   String password = '';
   Router _router;
   LoginComponent(this._router);
+
 //  final MenuItem menuItem = MenuItem('your label',
 //      icon: Icon('add'),
 //      subMenu: MenuModel([
