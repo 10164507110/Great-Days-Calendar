@@ -47,17 +47,6 @@ class CalendarComponent implements OnActivate{
 
 
   /*----- 我的群组有关的变量 -------*/
-  // final MenuItem menuItem = MenuItem('checkGroup',
-  //     icon: Icon('add'),
-  //     subMenu: MenuModel([
-  //       MenuItemGroup([
-  //         MenuItem('item1-1', tooltip: 'your tooltip'),
-  //         MenuItem('item1-2', tooltip: 'your second tooltip')
-  //       ], 'group1'),
-  //       MenuItemGroup([MenuItem('item2-1'), MenuItem('item2-2')], 'group2'),
-  //     ]));
-  // `````````````````上面是menu的dart```````````````````
-  
   bool groupsFlag = false;//默认我的群组展开
   bool addGroupFlag = false;//默认添加群组选项隐藏
   final bool changeGroupStatus = true;//默认对群组改动选项总显示
@@ -90,6 +79,7 @@ class CalendarComponent implements OnActivate{
   String myName = "stupig";//我的用户名
   List<Group> mygroups = [];//我的群组
   List<Plan> myplans = [];//我的计划
+  List<bool> myplandetails = [];
 
 
   /*----- 计算公共时间有关的变量 -------*/
@@ -440,6 +430,9 @@ class CalendarComponent implements OnActivate{
         break;
       }
     }
+    for(int i=0; i<myplans.length; i++)
+      myplandetails.add(false);
+
     // myplans.add(new Plan("看JOJO", "interval", "2019-01-07", "18:30", "2019-01-07", "23:30"));
     // myplans.add(new Plan("网络教育应用考试", "interval", "2019-01-10", "15:00", "2019-01-10", "17:00"));
     // myplans.add(new Plan("提交教育测量报告", "point", "2019-01-13", "00:00"));
@@ -478,6 +471,11 @@ class CalendarComponent implements OnActivate{
   //根据计划是第几个，选择对应的颜色给原点
   String planColor(int i){
     return "plancolor-" + (i+1).toString();
+  }
+
+  //显示计划的具体信息
+  void showPlanDetail(int i){
+    myplandetails[i] = !myplandetails[i];
   }
 
   //鼠标移到某个计划上
@@ -574,6 +572,7 @@ class CalendarComponent implements OnActivate{
         newplan = new Plan(planname, "interval", plandateBegin, plantimeBegin, plandateEnd, plantimeEnd);
       }
       myplans.add(newplan);
+      myplandetails.add(false);
       fillPlanColor();//更新颜色
       fillPlanType();//更新点划
       calendarUpdate();//更新日历
@@ -832,6 +831,7 @@ class Plan{
   String plantimeBegin, plantimeEnd;
   String plandateBegin, plandateEnd;
   String username;
+  String info;
 
   //constructor
   Plan(String planname, String plantype, String date1, String time1, [String date2, String time2]){
@@ -840,9 +840,11 @@ class Plan{
 
     if(plantype == 'point'){
       this.plandatePoint = date1; this.plantimePoint = time1;
+      this.info = plandatePoint + " " + plantimePoint;
     }else if(plantype == 'interval'){
       this.plandateBegin = date1; this.plantimeBegin = time1;
       this.plandateEnd = date2; this.plantimeEnd = time2;
+      this.info = plandateBegin + " " + plantimeBegin + " ~ " + plandateEnd + " " + plantimeEnd;
     }
   }
 
