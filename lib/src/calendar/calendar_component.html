@@ -279,13 +279,18 @@
                     <h2>已计算出的结果数量：{{resultNum}}</h2>
                     <hr />
                     <ul id="resultList">
-                        <li *ngFor="let result of finalResult">
+                        <li *ngFor="let result of finalResult; let i = index" class="result-li">
                             {{result.info}}
-                            <ol class="conflicts">
+                            <span *ngIf="!conflict[i] && hasConflict(i)"
+                                (click)="showConflict(i)" class="conflictWord">显示冲突信息</span>
+                            <ol class="conflicts" *ngIf="conflict[i]">
                                 <li *ngFor="let info of result.conflicts">
                                     {{info}}
                                 </li>
                             </ol>
+                            <button *ngIf="conflict[i]" (click)="closeConflict(i)"
+                                class="btn btn-default btn-close">close</button>
+                            <hr />
                         </li>
                     </ul>
                 </div>

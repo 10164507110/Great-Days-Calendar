@@ -100,3 +100,20 @@
 .greatDay #resultZone button{
     font-size:110%;
 }
+
+.greatDay .result-li{
+    margin-bottom: 5px;
+}
+
+
+
+
+
+/* 冲突区域 */
+.greatDay #result .conflicts{
+    padding-left: 30px;
+}
+
+.conflictWord:hover{
+    cursor: pointer;
+}

@@ -76,10 +76,12 @@ class CalendarComponent implements OnActivate{
 
   String groupName = '';//新添加的群组名称
 
+
+
   String myName = "stupig";//我的用户名
   List<Group> mygroups = [];//我的群组
   List<Plan> myplans = [];//我的计划
-  List<bool> myplandetails = [];
+  List<bool> myplandetails = [];//我的计划的具体时间信息
 
 
   /*----- 计算公共时间有关的变量 -------*/
@@ -93,6 +95,7 @@ class CalendarComponent implements OnActivate{
   int resultNum;
   List<String> dates = [];//form beginDate to endDate;
   List<Result> finalResult = [];
+  List<bool> conflict = [];
 
       /* ----------- 伪数据库 ----------- */
           List<User> users = [];
@@ -651,7 +654,9 @@ class CalendarComponent implements OnActivate{
           //清空相关变量
           dates = [];
           finalResult = [];
+          conflict = [];
           resultNum = 0;
+
           calculateGreatDay();//负责计算出公共时间
           this.commonTimeResultFlag = !this.commonTimeResultFlag;
     }else{
@@ -722,6 +727,7 @@ class CalendarComponent implements OnActivate{
       for(int j=0; j<members.length; j++){
         for(int k=0; k<members[j].userPointPlans.length; k++){
             Plan plan = members[j].userPointPlans[k];
+            if(plan.plandatePoint != dates[i]) continue;
             for(int r=0; r<result.length; r++){
               result[r].dealConflict(plan);
             }//end for(r) 扫描临时result数组
@@ -737,6 +743,11 @@ class CalendarComponent implements OnActivate{
     //结果数量
     resultNum = finalResult.length;
 
+    //冲突布尔变量
+    for(int i=0; i<finalResult.length; i++){
+      conflict.add(false);
+    }
+
   }//end calculateGreatDay
 
   //根据beginTime与endTime修改today
@@ -746,6 +757,21 @@ class CalendarComponent implements OnActivate{
        today[i] = 1;
      }
      return today;
+  }
+
+  //是否冲突
+  bool hasConflict(int i){
+    return (finalResult[i].conflicts.length != 0);
+  }
+
+  //显示冲突
+  void showConflict(int i){
+    conflict[i] = true;
+  }
+
+  //关闭冲突
+  void closeConflict(int i){
+    conflict[i] = false;
   }
 
   //从结果界面返回表单界面
@@ -975,7 +1001,7 @@ class Result{
   get deltaTime => Datee.deltaTime(beginTime, endTime);
   get flag => (this.deltaTime >= CalendarComponent.limitDelta)?true:false;
   get info => nowDate + ":" + beginTime + " ~ " + endTime + " " + 
-      Datee.deltaTime(beginTime, endTime).toString() + "min";
+      Datee.deltaTimeString(beginTime, endTime);
 
   Result(String nowDate, String begin, String end){
     this.nowDate = nowDate;
@@ -1102,6 +1128,18 @@ class Datee{
   static int deltaTime(String begin, String end){
     return (Datee.timeHour(end) * 60 + Datee.timeMinute(end))
           - (Datee.timeHour(begin) * 60 + Datee.timeMinute(begin));
+  }
+
+  //计算两个时间的差值，但返回的是1h30min的格式
+  static String deltaTimeString(String begin, String end){
+    int time = Datee.deltaTime(begin, end);//纯分钟的时间差
+    if(time~/60 == 0){
+      return time.toString()+ "min";
+    }else if(time%60 == 0){
+      return (time~/60).toString() + "h";
+    }else{
+      return (time~/60).toString() + "h" + (time%60).toString() + "min";
+    }
   }
   
 

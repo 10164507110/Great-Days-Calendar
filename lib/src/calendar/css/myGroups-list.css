@@ -28,6 +28,11 @@
     cursor: pointer;
 }
 
+.myGroups-list li{
+    position: relative;
+    left:-10px;
+}
+
 
 
 
