@@ -24,6 +24,9 @@
     margin: -5px;
 }
 
+.myGroups-list li:hover{
+    cursor: pointer;
+}
 
 
 
@@ -35,7 +38,7 @@
     font-size: 85%;
     font-weight: bold;
     margin-left: 18px;
-    color: black;
+    color: gray;
 }
 
 .member li{

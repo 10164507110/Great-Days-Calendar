@@ -89,7 +89,8 @@
                             <ul *ngIf="group.showMemberStatus" class="member">
                                 <li *ngFor = "let member of group.groupMembers; let j = index">
                                     -&nbsp;&nbsp;{{member.username}} 
-                                </li>                                
+                                </li>         
+                                <li>总计人数：{{group.groupMembers.length}}</li>                       
                             </ul>
                         </li>               
                     </ul>
@@ -117,11 +118,14 @@
                 <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
                 <ul *ngIf="plansFlag" class="pre-scrollable">
                     <li *ngFor = "let plan of myplans; let i = index" class="myPlan" 
-                        (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)"
-                         (click)="showPlanDetail(i)">
-                        -&nbsp;&nbsp;<span [class]="pastDay(i)">{{plan.planname}}</span>
+                        (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)">
+                        -&nbsp;&nbsp;
+                        <span [class]="pastDay(i)" (click)="showPlanDetail(i)">{{plan.planname}}</span>
                         <span class="plandot"><span [class]="plancolor[i]">{{dotOrDash[i]}}</span></span>
                         <label class="plandetail" *ngIf="myplandetails[i]">{{plan.info}}</label>
+                        <material-button icon (click)="deletePlanFromMyPlan(i)">
+                                <material-icon class="btn btn-group planOption" icon="delete" baseline></material-icon>
+                        </material-button> 
                     </li>
                 </ul>
                 <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">

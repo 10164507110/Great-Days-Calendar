@@ -224,7 +224,7 @@ class CalendarComponent implements OnActivate{
   void clearEvent(){
     for(int i=0; i<42; i++){
       eventColor[i] = "plancolor-";
-      hasEvent[i]  =false;
+      hasEvent[i] = false;
     }
   }
 
@@ -599,6 +599,15 @@ class CalendarComponent implements OnActivate{
 
     //之后，清空相关变量
     clearPlans();
+  }
+
+  //删除我的计划
+  void deletePlanFromMyPlan(int i){
+    myplans.removeAt(i);
+    plancolor.removeAt(i);
+    dotOrDash.removeAt(i);
+    hovercolor = new List<String>.filled(42, "hovercolor-");
+    calendarUpdate();
   }
   
 
