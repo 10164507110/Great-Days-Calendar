@@ -36,11 +36,6 @@
 @import url("css/myPlans-list.css");
 
 
-/*
- * 关于侧栏 right-list的样式
- */
-@import url("css/rightList.css");
-
 
 /*
  * 关于共同时间greatDay的样式
@@ -48,3 +43,8 @@
 @import url("css/greatDay.css");
 
 
+
+/*
+ * 关于左上方的logo区域的样式
+ */
+@import url("css/logozone.css");

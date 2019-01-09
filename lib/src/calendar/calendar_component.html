@@ -1,7 +1,9 @@
 <div class="main col-lg-12 row">
 
     <div class="col-lg-9 form-inline" id="logo-zone">
-        <h1>logo</h1>
+        <img src="images/favicon.PNG" id="logo" />
+        <img src="images/logo.png" id="logoword" />
+        <label>Abandoning time person, time also is able to abandon him</label>
         <!-- <button class="btn btn-info" (click)="sendEmail()">EMAIL</button> -->
     </div>
 
@@ -71,7 +73,7 @@
         <div class="myGroups-list">
             <div id="myGroups">
                 <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
-                    <ul *ngIf="groupsFlag" >                 
+                    <ul *ngIf="groupsFlag" class="pre-scrollable">                 
                         <li *ngFor = "let group of mygroups; let i = index" class="myGroup">
                             -&nbsp;&nbsp;{{group.groupname}} 
                             
@@ -84,11 +86,11 @@
                                 <material-icon *ngIf="changeGroupStatus" value= "let group of mygroups; let i = index" 
                                     class="btn btn-group groupOption" icon="delete" baseline></material-icon>
                             </material-button> 
-                            <div *ngIf="group.showMemberStatus" class="member">
-                                <div *ngFor = "let member of group.groupMembers; let j = index">
+                            <ul *ngIf="group.showMemberStatus" class="member">
+                                <li *ngFor = "let member of group.groupMembers; let j = index">
                                     -&nbsp;&nbsp;{{member.username}} 
-                                </div>                                
-                            </div>
+                                </li>                                
+                            </ul>
                         </li>               
                     </ul>
                     <button *ngIf="groupsFlag" class="btn btn-info btn-submit" (click)="dropDownAddGroupList()">新建群组</button>
@@ -113,7 +115,7 @@
         <div class="myPlans-list">
             <div id="myPlans">
                 <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
-                <ul *ngIf="plansFlag">
+                <ul *ngIf="plansFlag" class="pre-scrollable">
                     <li *ngFor = "let plan of myplans; let i = index" class="myPlan" 
                         (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)">
                         -&nbsp;&nbsp;{{plan.planname}}
@@ -128,6 +130,7 @@
                 </div>
 
                 <!------------------------ 我的计划 - 表单 -------------------------->
+                <div [class]="plantype+'-form'">
                 <div class="well" id="addPlanForm" *ngIf="showPlan">
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
@@ -168,7 +171,7 @@
                         </div>
 
                         <!-- 如果是时间段 -->
-                        <div *ngIf="plantype=='interval'">
+                        <div *ngIf="plantype=='interval'" id="interval-form">
                             <div class="form-group">
                                 <label for="plandate" class="col-sm-4 control-label">开始日期</label>
                                 <div class="col-sm-8">
@@ -208,6 +211,7 @@
                     <div *ngIf="submit && plantype=='point'">
                         {{plantimePoint.substring(0,2)}} - {{plantimePoint.substring(3)}}
                     </div>
+                </div>
                 </div>
                 <!-- end form -->
                 

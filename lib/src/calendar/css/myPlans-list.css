@@ -1,4 +1,9 @@
-/* --------- test -------- */
+/*
+ * myPlan-list.css ver.19-1-8
+ * 该CSS负责处理在右侧栏的我的计划的样式
+ */
+
+/* -----整体-------*/
 .myPlans-list{
     font-size: 140%;
     margin-top: 30px;
@@ -40,4 +45,31 @@
 /* ------------ addPlanForm's Style --------------- */
 #addPlanForm{
     font-size: 90%;
+}
+
+#addPlanForm{
+    position: absolute;
+    left:-88px;
+    top:193px;
+    z-index: 3000;
+}
+
+.point-form #addPlanForm{
+    /* color: blue !important; */
+    position: absolute;
+    left:-88px;
+    top:143px;
+    z-index: 3000;
+}
+
+.interval-form #addPlanForm{
+    /* color: red !important; */
+    position: absolute;
+    left:-88px;
+    top: 0px;
+    z-index: 3000;
+}
+
+#interval-form div{
+    margin: 0px;
 }

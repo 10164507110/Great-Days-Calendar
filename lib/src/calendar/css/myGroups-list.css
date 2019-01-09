@@ -1,4 +1,8 @@
-/* --------- test -------- */
+/*
+ * myGroup-list.css ver.19-1-8
+ * 该CSS负责处理在右侧栏的我的群组的样式
+ */
+
 .myGroups-list{
     font-size: 140%;
     margin-top: 30px;
@@ -20,7 +24,25 @@
     margin: -5px;
 }
 
+
+
+
+
+
+/* 显示群员
+-------------------------------*/
 .member{
-    font-size: 40%;
-    margin-left: 20px;
+    font-size: 85%;
+    font-weight: bold;
+    margin-left: 18px;
+    color: black;
+}
+
+.member li{
+    list-style: none;
+    background-color: white;
+    width: 200px;
+    padding-left: 10px;
+    margin-top:-3px;
+    margin-bottom: -3px;
 }

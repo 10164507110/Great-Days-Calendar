@@ -58,6 +58,7 @@
     color: #6ac13c;
     /* 今日的强调颜色 */
     color: #554B9A;
+    color: #29ccb6;
 }
 
 
@@ -126,6 +127,9 @@
     background-color: #554B9A;
 }
 
+#logo-zone label{
+    color: #7B68EE;
+}
 
 
 
@@ -182,9 +186,11 @@
 .btn-submit{
     background-color: #7B68EE;
     color: #FFF;
+    border-color: #7B68EE;
 }
 
 .btn-close{
     background-color: #E6E6E6;
     color: #484848;
+    border-color: #E6E6E6;
 }

@@ -1,0 +1,19 @@
+/*
+ * logozone.css ver.19-1-9
+ * 该CSS负责左上方的logo区域的样式
+ */
+
+#logo-zone #logo{
+    width: 70px;
+    margin:15px 20px 0px 10px;
+}
+
+#logo-zone #logoword{
+    width: 300px;
+}
+
+#logo-zone label{
+    position: relative;
+    top: 44%;
+    left: -34.5%;
+}
