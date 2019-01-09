@@ -117,9 +117,11 @@
                 <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
                 <ul *ngIf="plansFlag" class="pre-scrollable">
                     <li *ngFor = "let plan of myplans; let i = index" class="myPlan" 
-                        (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)">
+                        (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)"
+                         (click)="showPlanDetail(i)">
                         -&nbsp;&nbsp;{{plan.planname}}
                         <span class="plandot"><span [class]="plancolor[i]">{{dotOrDash[i]}}</span></span>
+                        <label *ngIf="myplandetails[i]">{{plan.info}}</label>
                     </li>
                 </ul>
                 <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">
