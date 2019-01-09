@@ -478,6 +478,23 @@ class CalendarComponent implements OnActivate{
     myplandetails[i] = !myplandetails[i];
   }
 
+  //判断这一计划是不是过去了
+  String pastDay(int i){
+    Plan plan = myplans[i];
+    DateTime nowtime = new DateTime.now();
+    String now = nowtime.year.toString() + '-' + (nowtime.month~/10).toString()
+        + (nowtime.month%10).toString() + '-' + (nowtime.day~/10).toString()
+        + (nowtime.day%10).toString();
+    if(plan.plantype == 'point'){
+      if(Datee.dateCompare(plan.plandatePoint, now) < 0)
+        return "pastday";
+    }else if(plan.plantype == 'interval'){
+      if(Datee.dateCompare(plan.plandateEnd, now) < 0)
+        return "pastday";
+    }
+    return "";
+  }
+
   //鼠标移到某个计划上
   void enterPlan(int i){
     // dotOrDash[i] = '+';

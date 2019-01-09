@@ -119,9 +119,9 @@
                     <li *ngFor = "let plan of myplans; let i = index" class="myPlan" 
                         (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)"
                          (click)="showPlanDetail(i)">
-                        -&nbsp;&nbsp;{{plan.planname}}
+                        -&nbsp;&nbsp;<span [class]="pastDay(i)">{{plan.planname}}</span>
                         <span class="plandot"><span [class]="plancolor[i]">{{dotOrDash[i]}}</span></span>
-                        <label *ngIf="myplandetails[i]">{{plan.info}}</label>
+                        <label class="plandetail" *ngIf="myplandetails[i]">{{plan.info}}</label>
                     </li>
                 </ul>
                 <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">

@@ -67,6 +67,7 @@
 
 
 /* 我的计划的颜色 */
+.pastday{color: gray;}/*已经过去了的事件*/
 .plancolor-1{ color: #CC3333;}
 .plancolor-2{ color: #FF6600;}
 .plancolor-3{ color: #FFFF66;}
@@ -154,6 +155,10 @@
 .myPlans-list #myPlans-button{
     color:white;
     background-color: #7469BC;
+}
+
+#myPlans li .plandetail{
+    color:gray;
 }
 
 .greatDay #commonTime-button{

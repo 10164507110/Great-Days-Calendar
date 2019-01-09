@@ -20,6 +20,9 @@
     margin-left: 40px;
 }
 
+#myPlans li:hover{
+    cursor: pointer;
+}
 
 
 
@@ -72,4 +75,15 @@
 
 #interval-form div{
     margin: 0px;
+}
+
+
+
+
+
+
+/* 具体的时间信息的样式 */
+.plandetail{
+    font-weight: normal;
+    font-size: 80%;
 }
