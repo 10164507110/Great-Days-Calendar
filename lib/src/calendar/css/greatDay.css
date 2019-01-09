@@ -16,13 +16,10 @@
 .greatDay #commonTime-button{
     font-size: 140%;
     font-weight: bold;
-    color:white;
-    background-color: skyblue;
 }
 
 .greatDay form{
     padding-top:25px;
-    background-color: #f6f6f6;
     height: 390px;
 }
 
@@ -91,11 +88,15 @@
 
 /* resultZone greatDay的结果区域 */
 .greatDay #resultZone{
-    padding-top:25px;
+    padding-top:0px;
     background-color: #f6f6f6;
     height: 390px;
 }
 
 .greatDay #result{ /* test */
-    padding-top: 50px;
+    padding-top: 10px;
+}
+
+.greatDay #resultZone button{
+    font-size:110%;
 }

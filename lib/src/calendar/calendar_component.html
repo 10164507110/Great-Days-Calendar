@@ -2,7 +2,7 @@
 
     <div class="col-lg-9 form-inline" id="logo-zone">
         <h1>logo</h1>
-        <button class="btn btn-info" (click)="sendEmail()">EMAIL</button>
+        <!-- <button class="btn btn-info" (click)="sendEmail()">EMAIL</button> -->
     </div>
 
     <div class="col-lg-9 calendar-main" id="main-zone">
@@ -15,12 +15,12 @@
                            [(ngModel)]="selectDate" ></material-input>
                     </div>
                 </form>
-                <button class="btn btn-info" (click)="gotoSelectDay()">Go</button>
+                <button class="btn btn-info btn-submit" (click)="gotoSelectDay()">Go</button>
             </div>
             <!-- 标题区域：日月/前进后退 -->
             <div class="title">
-                <h1 class="green" id="calendar-title">{{now_month}}月</h1>
-                <h2 class="green" id="calendar-year">{{now_year}}</h2>
+                <h1 class="monthYear" id="calendar-title">{{now_month}}月</h1>
+                <h2 class="monthYear" id="calendar-year">{{now_year}}</h2>
 
                 <img id="prev" src="images/prev.png" (click)="clickPrev()" />
                 <img id="next" src="images/next.png" (click)="clickNext()" />
@@ -29,7 +29,7 @@
             <!-- 日历主体 -->
             <div class="body">
                 <!-- 星期： SUN - SAT标题 -->
-                <div class="lightgrey body-list">
+                <div class="weekday body-list">
                     <ul>
                         <li>SUN</li>
                         <li>MON</li>
@@ -69,12 +69,6 @@
     <div class="col-lg-3" id="right-list">
         
         <div class="myGroups-list">
-                <!-- <section>
-                        <h2>Material FAB Menu</h2>
-                        <material-fab-menu [menuItem]="menuItem">
-                        </material-fab-menu>
-                </section> -->
-                <!-- `````````````````上面是menu的html（后来觉得不好用就不要了）```````````````````-->
             <div id="myGroups">
                 <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
                     <ul *ngIf="groupsFlag" >                 
@@ -97,7 +91,7 @@
                             </div>
                         </li>               
                     </ul>
-                    <button *ngIf="groupsFlag" class="btn btn-info" (click)="dropDownAddGroupList()">新建群组</button>
+                    <button *ngIf="groupsFlag" class="btn btn-info btn-submit" (click)="dropDownAddGroupList()">新建群组</button>
                     <!-- 添加群组表单 -->
                     <div>
                         <div *ngIf="addGroupFlag" class="form-group">
@@ -108,7 +102,7 @@
                                 </label>
                             </div>
                             <div>
-                                <button class="btn btn-info" (click)="addGroupList()">添加至我的群组</button>
+                                <button class="btn btn-info btn-submit" (click)="addGroupList()">添加至我的群组</button>
                             </div>
                         </div>
                     </div>
@@ -130,7 +124,7 @@
                    <img src="images/bottom.png" width="30px" title="点击此处展开"/> 
                 </div>
                 <div *ngIf="plansFlag" id="addPlanBtn">
-                    <button class="btn btn-info" (click)="addPlan();">+</button>
+                    <button class="btn btn-info btn-submit" (click)="addPlan();">+</button>
                 </div>
 
                 <!------------------------ 我的计划 - 表单 -------------------------->
@@ -206,8 +200,8 @@
                         </div>
                     </form>
 
-                    <button class="btn btn-info" (click)="submitPlan();">SUBMIT</button>
-                    <button class="btn btn-default" (click)="closePlan();">CLOSE</button>
+                    <button class="btn btn-info btn-submit" (click)="submitPlan();">SUBMIT</button>
+                    <button class="btn btn-default btn-close" (click)="closePlan();">CLOSE</button>
                     <div *ngIf="submitWarning">
                         <label class="alert alert-warning">请确保输入完整</label>
                     </div>
@@ -263,26 +257,29 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12 btn-group">
-                        <button type='button' class="btn btn-default" (click)="resetGreatDay()">Reset</button>
-                        <button type="button" class="btn btn-info" (click)="findGreatDay()">Great Day!</button>
+                        <button type='button' class="btn btn-default btn-close" (click)="resetGreatDay()">Reset</button>
+                        <button type="button" class="btn btn-info btn-submit" (click)="findGreatDay()">Great Day!</button>
                     </div>
                 </div>
             </form>
 
             <!-- 计算公共时间 结果区域 -->
             <div *ngIf="!commonTimeResultFlag" id="resultZone">
-                <div id="result">
-                    <!-- {{resultNum}} -->
-                    <ul>
+                <div id="result" class="pre-scrollable">
+                    <h2>已计算出的结果数量：{{resultNum}}</h2>
+                    <hr />
+                    <ul id="resultList">
                         <li *ngFor="let result of finalResult">
                             {{result.info}}
-                            <li *ngFor="let info of result.conflicts">
-                                {{info}}
-                            </li>
+                            <ol class="conflicts">
+                                <li *ngFor="let info of result.conflicts">
+                                    {{info}}
+                                </li>
+                            </ol>
                         </li>
                     </ul>
                 </div>
-                <button type="button" class="btn btn-default" (click)="returnGreatDayForm()">Return</button>
+                <button type="button" class="btn btn-default btn-close" (click)="returnGreatDayForm()">Return</button>
             </div>
         </div>
     </div>    

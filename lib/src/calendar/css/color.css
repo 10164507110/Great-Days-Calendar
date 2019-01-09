@@ -11,14 +11,28 @@
     color:#6ac13c;
 }
 
+/* 只用于年月 */
+.monthYear{
+    color: #703E9A;
+}
+
 /*浅灰色显示过去的日期*/
 .lightgrey{ 
     color:#a8a8a8;
+    /* 非本月日期颜色 */
+    color: #9E9E9E;
 }   
+
+/* 星期颜色 */
+.weekday{
+    color: #9E9E9E;
+}
 
 /* 黑色显示这个月的日期 */
 .black{
     color: #333;
+    /* 该月日期颜色 */
+    color: #703E9A;
 }
 
 
@@ -42,6 +56,8 @@
 /* 今日 */
 .today{
     color: #6ac13c;
+    /* 今日的强调颜色 */
+    color: #554B9A;
 }
 
 
@@ -97,8 +113,7 @@
 
 
 
-/* use in test */
-/* 调试过程中，对主要的几个区域涂背景色，便于区分，观察大小 */
+/* 主要的几个区域涂背景色 */
 #logo-zone{
     background-color: white;
 }
@@ -108,5 +123,68 @@
 }
 
 .main{
-    background-color: #EEE;
+    background-color: #554B9A;
+}
+
+
+
+
+
+
+/* 我的群组、计划等的颜色 */
+.myGroups-list{
+    background-color: #F6F2FB;
+    color: #7469BC;
+}
+
+.myGroups-list #myGroups-button{
+    color: white;
+    background-color: #7469BC;
+}
+
+.myPlans-list{
+    background-color: #F6F2FB;
+    color: #7469BC;
+}
+
+.myPlans-list #myPlans-button{
+    color:white;
+    background-color: #7469BC;
+}
+
+.greatDay #commonTime-button{
+    color:white;
+    background-color: #7469BC;
+}
+
+.greatDay form{
+    color: #7469BC;
+    background-color: #F6F2FB;
+}
+
+.greatDay #result h2{
+    color: #703E9A;
+}
+
+.greatDay #result{
+    color: #7469BC;
+}
+
+.greatDay #result .conflicts{
+    color: #9e9e9e;
+}
+
+
+
+
+
+/* 不同种类按钮的颜色 */
+.btn-submit{
+    background-color: #7B68EE;
+    color: #FFF;
+}
+
+.btn-close{
+    background-color: #E6E6E6;
+    color: #484848;
 }

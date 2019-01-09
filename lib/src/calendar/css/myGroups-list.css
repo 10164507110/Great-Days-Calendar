@@ -2,14 +2,11 @@
 .myGroups-list{
     font-size: 140%;
     margin-top: 30px;
-    background-color: #f6f6f6;
 }
 
 .myGroups-list #myGroups-button{
     font-size: 140%;
     font-weight: bold;
-    color: white;
-    background-color: skyblue;
 }
 
 .myGroups-list .myGroup{

@@ -623,6 +623,10 @@ class CalendarComponent implements OnActivate{
     //先表单检查
     if(selectGroup!="" && beginDate!="" && endDate!=""
         && beginTime!="" && endTime!=""){
+          //清空相关变量
+          dates = [];
+          finalResult = [];
+          resultNum = 0;
           calculateGreatDay();//负责计算出公共时间
           this.commonTimeResultFlag = !this.commonTimeResultFlag;
     }else{
@@ -704,6 +708,9 @@ class CalendarComponent implements OnActivate{
         finalResult.add(result[t]);
       }
     }//end for i(每一天)
+
+    //结果数量
+    resultNum = finalResult.length;
 
   }//end calculateGreatDay
 
