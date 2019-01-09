@@ -30,7 +30,7 @@ class User extends Serializable {
 //        await readData(conn);
     Results result = await (await conn
         .execute('SELECT *'
-        'FROM user'))
+        'FROM users'))
         .deStream();
     print(result);
     print(result.map((r) => r.byName('username')));
@@ -149,7 +149,7 @@ class User extends Serializable {
     print("Opened connection!");
 
     print("Inserting rows ...");
-    await conn.preparedWithAll("INSERT INTO user (username,password,email) VALUES (?,?,?)", [
+    await conn.preparedWithAll("INSERT INTO users (username,password,email) VALUES (?,?,?)", [
       [username, password, mailbox],
       ]);
     ifRegister = true;
