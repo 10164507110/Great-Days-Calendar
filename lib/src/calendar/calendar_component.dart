@@ -219,6 +219,7 @@ class CalendarComponent implements OnActivate{
     myplanUpdate();
 
     commonTimeUpdate();//将计算公共时间区域的变量更新
+    updateName();
 
   }//close calendarUpdate()
 
@@ -228,6 +229,14 @@ class CalendarComponent implements OnActivate{
     for(int i=0; i<42; i++){
       eventColor[i] = "plancolor-";
       hasEvent[i] = false;
+    }
+  }
+
+  void updateName(){
+    for(int i=0; i<users.length; i++){
+      if(users[i].id == userid){
+        myName = users[i].username;
+      }
     }
   }
 
@@ -790,11 +799,11 @@ class CalendarComponent implements OnActivate{
     //myid = stupig happig jumpig sleepig champig
     print(userid);
     //创建了五名角色
-    User stupig = new User("stupig");
-    User happig = new User("happig");
-    User jumpig = new User("jumpig");
-    User sleepig = new User("sleepig");
-    User champig = new User("champig");
+    User stupig = new User(1,"stupig");
+    User happig = new User(2,"happig");
+    User jumpig = new User(3,"jumpig");
+    User sleepig = new User(4,"sleepig");
+    User champig = new User(5,"champig");
 
     //填充各自的计划
     /* stupig's plans*/
@@ -957,6 +966,7 @@ class Group{
 
 /* --------------------- 用户的类 ----------------------- */
 class User{
+  int id;
   String username;
   //这里可能还有更多与用户相关的个人信息，例如性别等
 
@@ -966,7 +976,8 @@ class User{
   List<Group> userGroups;//该用户的群组
 
   //constructor
-  User(String username){
+  User(int id, String username){
+    this.id = id;
     this.username = username;
     this.userPlans = [];
     this.userGroups = [];

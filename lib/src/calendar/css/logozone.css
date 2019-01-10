@@ -17,3 +17,10 @@
     top: 44%;
     left: -34.5%;
 }
+
+#logo-zone #username{
+    position: absolute;
+    font-size: 160%;
+    left: 80%;
+    top: -10%;
+}
