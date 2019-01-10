@@ -117,3 +117,9 @@
 .conflictWord:hover{
     cursor: pointer;
 }
+
+.btn-conflict{
+    padding: 4px;
+    margin:5px;
+    margin-left: 70%;
+}

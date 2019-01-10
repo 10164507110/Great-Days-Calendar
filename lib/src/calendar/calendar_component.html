@@ -73,7 +73,7 @@
         
         <div class="myGroups-list">
             <div id="myGroups">
-                <div id="myGroups-button" (click)="dropDownList('group')">我的群组</div>
+                <div id="myGroups-button" (click)="dropDownList('group')" class="zone-title">我的群组</div>
                     <ul *ngIf="groupsFlag" class="pre-scrollable">                 
                         <li *ngFor = "let group of mygroups; let i = index" class="myGroup">
                             -&nbsp;&nbsp;{{group.groupname}} 
@@ -99,9 +99,9 @@
                     <!-- 添加群组表单 -->
                     <div>
                         <div *ngIf="addGroupFlag" class="form-group">
-                            <div>
-                                <label class="radio-inline">输入群组名称
-                                    <material-input type="text" autoFocus floatingLabel style="width:100%" 
+                            <div class="form-group" style="margin-left: 10px;">
+                                <label class="control-label">输入群组名称：
+                                    <material-input type="text" autoFocus floatingLabel style="width:50%" 
                                     [(ngModel)]="groupName"></material-input>                                    
                                 </label>
                             </div>
@@ -116,7 +116,7 @@
 
         <div class="myPlans-list">
             <div id="myPlans">
-                <div id="myPlans-button" (click)="dropDownList('plan')">我的计划</div>
+                <div id="myPlans-button" (click)="dropDownList('plan')" class="zone-title">我的计划</div>
                 <ul *ngIf="plansFlag" class="pre-scrollable">
                     <li *ngFor = "let plan of myplans; let i = index" class="myPlan" 
                         (mouseenter)="enterPlan(i)" (mouseleave)="leavePlan(i)">
@@ -153,7 +153,7 @@
                                 <label class="radio-inline">
                                     <material-radio name="plantype" value="point" >时间点</material-radio>
                                 </label>
-                                <label class="radio-inline">
+                                <label class="radio-inline" style="position: relative; left: -5%;">
                                     <material-radio name="plantype" value="interval">时间段</material-radio>
                                 </label>
                             </material-radio-group>
@@ -226,7 +226,7 @@
         </div>
 
         <div class="greatDay">
-            <div id="commonTime-button" (click)="dropDownList('common')">寻找共有时间</div>
+            <div id="commonTime-button" (click)="dropDownList('common')" class="zone-title">寻找共有时间</div>
 
             <!-- 计算公共时间 表格填写部分 -->
             <form class="form-horizontal" *ngIf="commonTimeFlag && commonTimeResultFlag">
@@ -290,7 +290,7 @@
                                 </li>
                             </ol>
                             <button *ngIf="conflict[i]" (click)="closeConflict(i)"
-                                class="btn btn-default btn-close">close</button>
+                                class="btn btn-default btn-close btn-conflict">close</button>
                             <hr />
                         </li>
                     </ul>

@@ -814,6 +814,7 @@ class CalendarComponent implements OnActivate{
     stupig.addPlan(new Plan("做教育游戏", "point", "2019-01-06", "00:00"));
     stupig.addPlan(new Plan("外出打工，赚钱养家", "interval", "2019-01-05", "18:30", "2019-01-05","20:30"));
     stupig.addPlan(new Plan("回老家过年！！！", "point", "2019-01-17", "08:30"));
+    stupig.addPlan(new Plan("去环球港吃喝玩乐", "interval", "2019-01-09", "13:00", "2019-01-09", "20:00"));
     /* happig's plans*/
     happig.addPlan(new Plan("补《海王》", "point", "2019-01-01", "18:30"));
     happig.addPlan(new Plan("在宿舍补番，拒不开会", "interval", "2019-01-05", "00:00", "2019-01-06", "00:00"));
@@ -839,6 +840,8 @@ class CalendarComponent implements OnActivate{
     champig.addPlan(new Plan("提交教育测量报告", "point", "2019-01-13", "00:00"));
     champig.addPlan(new Plan("不明原因外出", "interval", "2019-01-08", "08:00", "2019-01-10", "15:00"));
     champig.addPlan(new Plan("双休日拒不开会", "interval", "2019-01-12", "00:00", "2019-01-13","23:59"));
+    champig.addPlan(new Plan("英语考试", "interval", "2019-01-09","15:30", "2019-01-09","17:30"));
+    champig.addPlan(new Plan("陪二水吃鸡", "point", "2019-01-10",  "19:00"));
     champig.addPlan(new Plan("回老家过年！！！", "point", "2019-01-17", "08:30"));
 
     //填充群组信息
@@ -848,11 +851,11 @@ class CalendarComponent implements OnActivate{
     Group two = new Group("英汉互译组");
     two.addUser(stupig);two.addUser(happig);two.addUser(jumpig);two.addUser(sleepig);two.addUser(champig);
     Group three = new Group("一起去环球港大吃大喝");
-    three.addUser(happig);three.addUser(jumpig);
+    three.addUser(happig);three.addUser(jumpig);three.addUser(stupig);
     Group four = new Group("2016级教信班委群");
     four.addUser(stupig);four.addUser(happig);four.addUser(jumpig);four.addUser(champig);
 
-    stupig.addGroup(one);stupig.addGroup(two);stupig.addGroup(four);
+    stupig.addGroup(one);stupig.addGroup(two);stupig.addGroup(four);stupig.addGroup(three);
     happig.addGroup(one);happig.addGroup(two);happig.addGroup(three);happig.addGroup(four);
     jumpig.addGroup(one);jumpig.addGroup(two);jumpig.addGroup(three);jumpig.addGroup(four);
     sleepig.addGroup(one);sleepig.addGroup(two);

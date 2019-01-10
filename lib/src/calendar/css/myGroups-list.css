@@ -33,6 +33,20 @@
     left:-10px;
 }
 
+#myGroups ul{
+    max-height: 300px;
+}
+
+#myGroups button{
+    margin: 10px;
+}
+
+.zone-title{
+    font-size: 20%;
+    padding: 2px;
+    padding-left: 8px;
+}
+
 
 
 
