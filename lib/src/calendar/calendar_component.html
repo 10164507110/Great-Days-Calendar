@@ -3,7 +3,7 @@
     <div class="col-lg-9 form-inline" id="logo-zone">
         <img src="images/favicon.PNG" id="logo" />
         <img src="images/logo.png" id="logoword" />
-        <label>Abandoning time person, time also is able to abandon him</label>
+        <label>Remember every sweet moment with caiji and 77!</label>
         <h1 id="username">{{myName}}的日历</h1>
         <!-- <button class="btn btn-info" (click)="sendEmail()">EMAIL</button> -->
     </div>
@@ -126,7 +126,10 @@
                         <label class="plandetail" *ngIf="myplandetails[i]">{{plan.info}}</label>
                         <material-button icon (click)="deletePlanFromMyPlan(i)">
                                 <material-icon class="btn btn-group planOption" icon="delete" baseline></material-icon>
-                        </material-button> 
+                        </material-button>
+                        <material-button icon>
+                            <material-icon class="btn btn-group planOption" icon="delete" baseline></material-icon>
+                        </material-button>
                     </li>
                 </ul>
                 <div *ngIf="!plansFlag" style="text-align: center;" (click)="dropDownList('plan')">
@@ -145,6 +148,15 @@
                             <div class="col-sm-8">
                                 <material-input type="text" autoFocus floatingLabel style="width:100%" 
                                     [(ngModel)]="planname" aria-placeholder="请输入任务名"></material-input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">选择群组</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" (change)="changeGroup($event.target.value)" id="mySelectGroup">
+                                    <option value=""> -- 请选择 -- </option>
+                                    <option *ngFor="let group of mygroups" [value]="group.groupname">{{group.groupname}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
