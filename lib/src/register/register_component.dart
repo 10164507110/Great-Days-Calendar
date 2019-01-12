@@ -9,8 +9,6 @@ import 'package:calendar/src/calendar/calendar_component.dart';
 import 'package:calendar/src/route_paths.dart';
 import 'package:http/http.dart' as http;
 import 'package:calendar/src/routes.dart';
-import 'package:calendar/mailer/mailer.dart';
-import 'package:calendar/smtp_server/ecnustumail.dart';
 
 @Component(
   selector: 'register',
@@ -38,7 +36,6 @@ class RegisterComponent{
   String identify_code ='';
   String code = '';
   Router _router;
-//  _router.;
   RegisterComponent(this._router);
 
   sendEmail()async {
@@ -100,7 +97,6 @@ class RegisterComponent{
         }
         else
           window.alert("注册失败");
-//          print(response.body);
       })
           .whenComplete(client.close);
     }
